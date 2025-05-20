@@ -8,6 +8,13 @@ from .database import SessionLocal
 from . import models
 from .database import get_db
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+
+
 # ---------------- Password Hashing ----------------
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -18,7 +25,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 # ---------------- JWT Config ----------------
-SECRET_KEY = "31c7315d9g860k31b7d159m86s0"  # ✅ USE ONLY ONE — consistent with create_access_token
+SECRET_KEY = os.getenv("SECRET_KEY") # ✅ USE ONLY ONE — consistent with create_access_token
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
