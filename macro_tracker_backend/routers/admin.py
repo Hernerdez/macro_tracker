@@ -12,7 +12,7 @@ router = APIRouter(
 )
 
 
-@app.get("/users/", response_model=list[schemas.UserOut])
+@router.get("/users/", response_model=list[schemas.UserOut])
 def get_users(
     db: Session = Depends(get_db),
     _: models.User = Depends(require_admin)  # Enforces admin check
