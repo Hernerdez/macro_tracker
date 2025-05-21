@@ -43,15 +43,9 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password_hash: str
-    goal_protein: int
-    goal_carbs: int
-    goal_fat: int
 
 class UserOut(UserBase):
     id: int
-    goal_protein: int
-    goal_carbs: int
-    goal_fat: int
     role: str  
     
     class Config:
