@@ -1,7 +1,5 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "functions": {},
-  "outputDirectory": "macro-tracker-frontend/dist"
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
