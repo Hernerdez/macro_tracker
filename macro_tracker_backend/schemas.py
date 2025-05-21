@@ -52,6 +52,10 @@ class UserOut(UserBase):
     goal_protein: int
     goal_carbs: int
     goal_fat: int
+    role: str  
+    
+    class Config:
+        from_attributes = True
 
 class Config:
         orm_mode = True

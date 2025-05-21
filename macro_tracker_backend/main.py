@@ -91,15 +91,39 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
         raise HTTPException(status_code=400, detail="Invalid credentials")
     
     access_token = create_access_token(
-        data={"sub": user.email},
+        data={"sub": user.email, "role": user.role},  # include role
         expires_delta=timedelta(minutes=60)
-    )
+)
     return {"access_token": access_token, "token_type": "bearer"}
 
 from fastapi import Depends
 from .auth import get_current_user
-from . import schemas
+from . import schemas, models
 
 @app.get("/me/", response_model=schemas.UserOut)
 def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+@app.get("/admin-only/")
+def read_admin_data(current_user: models.User = Depends(get_current_user)):
+    if current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You do not have permission to access this resource.",
+        )
+    return {"message": "Welcome, admin!"}
+
+
+from .auth import require_admin
+@app.delete("/users/{user_id}")
+def delete_user(
+    user_id: int,
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)  # Enforces admin check!
+):
+    user = db.query(models.User).filter(models.User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    db.delete(user)
+    db.commit()
+    return {"message": f"User {user_id} deleted"}
