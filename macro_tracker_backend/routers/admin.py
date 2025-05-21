@@ -4,6 +4,8 @@ from .. import models
 from ..auth import require_admin
 from ..auth import get_current_user
 from ..database import get_db
+from .. import schemas
+
 
 router = APIRouter(
     prefix="/admin",
