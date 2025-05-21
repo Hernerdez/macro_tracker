@@ -1,0 +1,7 @@
+{
+  "semi": true,               // Adds semicolons at end of lines
+  "singleQuote": true,        // Uses single quotes instead of double
+  "printWidth": 80,           // Wraps lines at 80 characters (good for readability)
+  "tabWidth": 2,              // Uses 2 spaces per tab (standard for JS/React)
+  "trailingComma": "es5"      // Adds trailing commas where valid in ES5 (like arrays/objects)
+}

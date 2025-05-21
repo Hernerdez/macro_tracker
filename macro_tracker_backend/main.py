@@ -1,3 +1,4 @@
+from .routers import admin
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
@@ -51,7 +52,10 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return db_user
 
 @app.get("/users/", response_model=list[schemas.UserOut])
-def get_users(db: Session = Depends(get_db)):
+def get_users(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)  # Enforces admin check
+):
     return db.query(models.User).all()
 
 # ---------- MEALS ----------
@@ -104,26 +108,4 @@ from . import schemas, models
 def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
-@app.get("/admin-only/")
-def read_admin_data(current_user: models.User = Depends(get_current_user)):
-    if current_user.role != "admin":
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN,
-            detail="You do not have permission to access this resource.",
-        )
-    return {"message": "Welcome, admin!"}
-
-
-from .auth import require_admin
-@app.delete("/users/{user_id}")
-def delete_user(
-    user_id: int,
-    db: Session = Depends(get_db),
-    _: models.User = Depends(require_admin)  # Enforces admin check!
-):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    db.delete(user)
-    db.commit()
-    return {"message": f"User {user_id} deleted"}
+app.include_router(admin.router) 
