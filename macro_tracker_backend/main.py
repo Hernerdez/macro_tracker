@@ -43,9 +43,6 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = models.User(
         email=user.email,
         password_hash=hashed_pw,
-        goal_protein=user.goal_protein,
-        goal_carbs=user.goal_carbs,
-        goal_fat=user.goal_fat,
     )
     db.add(db_user)
     db.commit()
