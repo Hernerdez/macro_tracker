@@ -1,72 +1,59 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-function Signup() {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [goalProtein, setGoalProtein] = useState('');
-    const [goalCarbs, setGoalCarbs] = useState('');
-    const [goalFat, setGoalFat] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
+const Signup = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
 
-    const handleSignup = async (e) => {
+  const validate = () => {
+    const newErrors = {};
+
+    if (!email) newErrors.email = 'Email is required';
+    if (!password || password.length < 6)
+      newErrors.password = 'Password must be at least 6 characters';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSignup = async (e) => {
     e.preventDefault();
+    if (!validate()) return;
+
     try {
-        const response = await axios.post('https://macro-tracker-api.onrender.com/users/', {
+      await axios.post('https://macro-tracker-api.onrender.com/users/', {
         email,
-        password_hash: password,
-        goal_protein: parseInt(goalProtein),
-        goal_carbs: parseInt(goalCarbs),
-        goal_fat: parseInt(goalFat)
-        });
-
-        setSuccessMessage('Account created successfully!');
-        console.log(response.data);
+        password,
+      });
+      alert('Signup successful!');
     } catch (err) {
-        console.error(err);
-        setSuccessMessage('Signup failed. Check input or try again.');
+      console.error(err);
+      alert('Signup failed');
     }
-    };
+  };
 
-    return (
-    <div>
-    <h2>Sign Up</h2>
+  return (
     <form onSubmit={handleSignup}>
-        <input
+      <input
         type="email"
         placeholder="Email"
         value={email}
-        onChange={e => setEmail(e.target.value)}
-        /><br />
-        <input
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      {errors.email && <p>{errors.email}</p>}
+
+      <input
         type="password"
-        placeholder="Password"
+        placeholder="Password (min 6 chars)"
         value={password}
-        onChange={e => setPassword(e.target.value)}
-        /><br />
-        <input
-        type="number"
-        placeholder="Protein Goal (g)"
-        value={goalProtein}
-        onChange={e => setGoalProtein(e.target.value)}
-        /><br />
-        <input
-        type="number"
-        placeholder="Carbs Goal (g)"
-        value={goalCarbs}
-        onChange={e => setGoalCarbs(e.target.value)}
-        /><br />
-        <input
-        type="number"
-        placeholder="Fat Goal (g)"
-        value={goalFat}
-        onChange={e => setGoalFat(e.target.value)}
-        /><br />
-        <button type="submit">Create Account</button>
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      {errors.password && <p>{errors.password}</p>}
+
+      <button type="submit">Sign Up</button>
     </form>
-    {successMessage && <p>{successMessage}</p>}
-    </div>
-    );
-}
+  );
+};
 
 export default Signup;
