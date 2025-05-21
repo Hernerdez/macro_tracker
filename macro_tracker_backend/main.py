@@ -9,6 +9,7 @@ from .database import engine, SessionLocal
 from .auth import hash_password, verify_password, create_access_token
 from .auth import get_current_user
 
+
 from fastapi.security import OAuth2PasswordRequestForm
 
 # Create all tables
@@ -50,13 +51,6 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_user)
     return db_user
-
-@app.get("/users/", response_model=list[schemas.UserOut])
-def get_users(
-    db: Session = Depends(get_db),
-    _: models.User = Depends(require_admin)  # Enforces admin check
-):
-    return db.query(models.User).all()
 
 # ---------- MEALS ----------
 

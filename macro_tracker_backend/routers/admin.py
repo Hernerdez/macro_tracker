@@ -11,6 +11,14 @@ router = APIRouter(
     dependencies=[Depends(require_admin)]
 )
 
+
+@app.get("/users/", response_model=list[schemas.UserOut])
+def get_users(
+    db: Session = Depends(get_db),
+    _: models.User = Depends(require_admin)  # Enforces admin check
+):
+    return db.query(models.User).all()
+
 @router.get("/only")
 def read_admin_data(current_user: models.User = Depends(get_current_user)):
     return {"message": "Welcome, admin!"}
