@@ -42,7 +42,7 @@ class UserBase(BaseModel):
     email: str
 
 class UserCreate(UserBase):
-    password_hash: str
+    password_hash: str = Field(alias="password")
 
 class UserOut(UserBase):
     id: int
