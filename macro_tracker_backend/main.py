@@ -16,6 +16,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.model_config = {"populate_by_name": True}
 print("✅ FastAPI app initialized")
 
 # Allow frontend to connect (adjust later)
