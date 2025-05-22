@@ -7,7 +7,6 @@ const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-
     const navigate = useNavigate();
   const validate = () => {
     const newErrors = {};

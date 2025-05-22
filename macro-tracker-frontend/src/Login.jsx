@@ -11,7 +11,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        'https://macro-tracker-api.onrender.com/login/',
+        'https://macro-tracker-api.onrender.com/Login/',
         new URLSearchParams({
           username: email,
           password: password
