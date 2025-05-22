@@ -24,7 +24,10 @@ function Login() {
         }
       );
 
-      setToken(response.data.access_token);
+    const accessToken = response.data.access_token;
+    setToken(accessToken);
+    localStorage.setItem('token', accessToken);
+    
       setError('');
       alert('Login successful!');
     } catch (err) {
