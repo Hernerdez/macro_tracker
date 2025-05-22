@@ -101,3 +101,4 @@ def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
 app.include_router(admin.router) 
+

@@ -1,11 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
 
+    const navigate = useNavigate();
   const validate = () => {
     const newErrors = {};
 
@@ -27,6 +30,7 @@ const Signup = () => {
         password,
       });
       alert('Signup successful!');
+      navigate('/login');
     } catch (err) {
       console.error(err);
       alert('Signup failed');
