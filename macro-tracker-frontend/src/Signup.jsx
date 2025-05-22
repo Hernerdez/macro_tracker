@@ -26,8 +26,10 @@ const Signup = () => {
     try {
       await axios.post('https://macro-tracker-api.onrender.com/users/', {
         email,
-        password,
+        password: password
+        
       });
+      console.log(response.data);
       alert('Signup successful!');
       navigate('/login');
     } catch (err) {
