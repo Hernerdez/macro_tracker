@@ -9,19 +9,19 @@ from .database import engine, SessionLocal
 from .auth import hash_password, verify_password, create_access_token
 from .auth import get_current_user
 
-
+from pydantic import Field
 from fastapi.security import OAuth2PasswordRequestForm
-
 # Create all tables
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+app.model_config = {"populate_by_name": True}
 print("✅ FastAPI app initialized")
 
 # Allow frontend to connect (adjust later)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://macro-tracker-gamma.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -43,9 +43,6 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = models.User(
         email=user.email,
         password_hash=hashed_pw,
-        goal_protein=user.goal_protein,
-        goal_carbs=user.goal_carbs,
-        goal_fat=user.goal_fat,
     )
     db.add(db_user)
     db.commit()
@@ -103,3 +100,4 @@ def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
 app.include_router(admin.router) 
+

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import date
 from typing import Optional
 
@@ -42,16 +42,10 @@ class UserBase(BaseModel):
     email: str
 
 class UserCreate(UserBase):
-    password_hash: str
-    goal_protein: int
-    goal_carbs: int
-    goal_fat: int
+    password_hash: str = Field(alias="password")
 
 class UserOut(UserBase):
     id: int
-    goal_protein: int
-    goal_carbs: int
-    goal_fat: int
     role: str  
     
     class Config:

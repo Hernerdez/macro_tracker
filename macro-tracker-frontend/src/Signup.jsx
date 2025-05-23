@@ -1,11 +1,13 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 
 const Signup = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-
+    const navigate = useNavigate();
   const validate = () => {
     const newErrors = {};
 
@@ -17,21 +19,25 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+ const handleSignup = async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
 
-    try {
-      await axios.post('https://macro-tracker-api.onrender.com/users/', {
-        email,
-        password,
-      });
-      alert('Signup successful!');
-    } catch (err) {
-      console.error(err);
-      alert('Signup failed');
-    }
-  };
+  try {
+    const response = await axios.post('https://macro-tracker-api.onrender.com/users/', {
+      email,
+      password: password
+    });
+
+    console.log(response.data);
+    alert('Signup successful!');
+    navigate('/login');
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.detail || 'Signup failed');
+  }
+};
+
 
   return (
     <form onSubmit={handleSignup}>
