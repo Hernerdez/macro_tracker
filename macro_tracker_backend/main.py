@@ -28,8 +28,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-  app.include_router(admin.router)
-    app.include_router(router)
+app.include_router(admin.router)
+app.include_router(router)
 # Dependency to get DB session
 def get_db():
     db = SessionLocal()
