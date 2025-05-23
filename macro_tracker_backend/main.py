@@ -21,7 +21,7 @@ print("✅ FastAPI app initialized")
 # Allow frontend to connect (adjust later)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://macro-tracker-gamma.vercel.app/"],
+    allow_origins=["https://macro-tracker-gamma.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
