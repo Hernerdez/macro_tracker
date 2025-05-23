@@ -177,8 +177,7 @@ function SearchFood() {
               </div>
               <div style={{ marginBottom: '1rem' }}>
                 <label>Time Eaten (optional): </label>
-                <input type="datetime-local" name="time" value={form.time} onChange={handleFormChange} />
-              </div>
+                <input type="time" name="time" value={form.time} onChange={handleFormChange} />              </div>
               <div style={{ marginBottom: '1rem' }}>
                 <label>Meal Type: </label>
                 <select name="mealType" value={form.mealType} onChange={handleFormChange} required>
