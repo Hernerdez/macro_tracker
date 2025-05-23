@@ -28,11 +28,10 @@ const Signup = () => {
       email,
       password: password
     });
-    const accessToken = response.data.access_token;
-    setToken(accessToken);
-    localStorage.setItem('token', accessToken);
-    setError('');
-    navigate('/dashboard'); // ✅ Redirect here instead of alert
+
+    console.log(response.data);
+    alert('Signup successful!');
+    navigate('/login');
   } catch (err) {
     console.error(err);
     alert(err.response?.data?.detail || 'Signup failed');

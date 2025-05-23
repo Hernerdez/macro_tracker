@@ -9,33 +9,32 @@ function Login() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        'https://macro-tracker-api.onrender.com/login/',
-        new URLSearchParams({
-          username: email,
-          password: password
-        }),
-        {
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.post(
+      'https://macro-tracker-api.onrender.com/login/',
+      new URLSearchParams({
+        username: email,
+        password: password
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
         }
-      );
+      }
+    );
 
-      const accessToken = response.data.access_token;
-      setToken(accessToken);
-      localStorage.setItem('token', accessToken);
-      setError('');
-      alert('Login successful!');
-      // navigate('/dashboard'); // optional redirect
-    } catch (err) {
-      console.error(err);
-      setError('Invalid email or password');
-    }
-  };
+    const accessToken = response.data.access_token;
+    setToken(accessToken);
+    localStorage.setItem('token', accessToken);
+    setError('');
+    navigate('/dashboard'); // ✅ Redirect here instead of alert
+  } catch (err) {
+    console.error(err);
+    setError('Invalid email or password');
+  }
+};
 
 return (
   <div>
