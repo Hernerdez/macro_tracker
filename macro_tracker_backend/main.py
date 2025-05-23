@@ -117,7 +117,7 @@ def search_food(query: str = Query(...)):
     api_key = os.getenv("USDA_API_KEY")
     url = "https://api.nal.usda.gov/fdc/v1/foods/search"
     response = requests.get(url, params={"query": query, "api_key": api_key})
-
     return response.json()
+
 
 app.include_router(router)
