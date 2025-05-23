@@ -9,7 +9,7 @@ from .database import engine, SessionLocal
 from .auth import hash_password, verify_password, create_access_token
 from .auth import get_current_user
 
-
+from pydantic import Field
 from fastapi.security import OAuth2PasswordRequestForm
 # Create all tables
 models.Base.metadata.create_all(bind=engine)
