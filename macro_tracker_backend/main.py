@@ -28,8 +28,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(admin.router)
-app.include_router(router)
+
 # Dependency to get DB session
 def get_db():
     db = SessionLocal()
@@ -105,7 +104,6 @@ from . import schemas, models
 def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
-app.include_router(admin.router) 
 
 import os
 import requests
@@ -122,5 +120,5 @@ def search_food(query: str = Query(...)):
     response = requests.get(url, params={"query": query, "api_key": api_key})
     return response.json()
 
-
+app.include_router(admin.router)
 app.include_router(router)
