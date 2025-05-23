@@ -20,7 +20,7 @@ function SearchFood() {
         {
           params: { query },
           headers: {
-            Authorization: `Bearer ${token}`, // optional, in case you want to protect
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -48,11 +48,24 @@ function SearchFood() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <ul>
-        {results.map((food, index) => (
-          <li key={index}>
-            <strong>{food.description}</strong> {food.brandOwner && `(${food.brandOwner})`}
-          </li>
-        ))}
+        {results.map((food, index) => {
+          const getNutrient = (id) => {
+            const nutrient = food.foodNutrients?.find(n => n.nutrientId === id);
+            return nutrient ? `${nutrient.value} ${nutrient.unitName}` : 'N/A';
+          };
+
+          return (
+            <li key={index} style={{ marginBottom: '1.5rem' }}>
+              <strong>{food.description}</strong> {food.brandOwner && `(${food.brandOwner})`}
+              <ul style={{ marginTop: '0.5rem' }}>
+                <li>Calories: {getNutrient(1008)}</li>
+                <li>Protein: {getNutrient(1003)}</li>
+                <li>Carbs: {getNutrient(1005)}</li>
+                <li>Fat: {getNutrient(1004)}</li>
+              </ul>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
