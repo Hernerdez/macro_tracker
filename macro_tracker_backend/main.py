@@ -60,8 +60,11 @@ def create_meal(meal: schemas.MealCreate, db: Session = Depends(get_db)):
     return db_meal
 
 @app.get("/meals/", response_model=list[schemas.MealOut])
-def get_meals(db: Session = Depends(get_db)):
-    return db.query(models.Meal).all()
+def get_my_meals(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    return db.query(models.Meal).filter(models.Meal.user_id == current_user.id).all()
 
 # ---------- FOODS ----------
 
