@@ -32,6 +32,38 @@ function SearchFood() {
     }
   };
 
+  const handleLogFood = async (food) => {
+  const token = localStorage.getItem('token');
+  if (!token) return;
+
+  const getNutrientValue = (id) => {
+    const nutrient = food.foodNutrients?.find(n => n.nutrientId === id);
+    return nutrient ? nutrient.value : 0;
+  };
+
+  const payload = {
+    name: food.description,
+    protein: Math.round(getNutrientValue(1003)),
+    carbs: Math.round(getNutrientValue(1005)),
+    fats: Math.round(getNutrientValue(1004)),
+    calories: Math.round(getNutrientValue(1008)),
+    meal_id: 1 // TODO: Replace with real meal selection later
+  };
+
+  try {
+    await axios.post('https://macro-tracker-api.onrender.com/foods/', payload, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+    alert(`${food.description} logged!`);
+  } catch (err) {
+    console.error(err);
+    alert('Failed to log food.');
+  }
+};
+
+
   return (
     <div style={{ padding: '2rem' }}>
       <h1>Search Foods</h1>
@@ -49,6 +81,13 @@ function SearchFood() {
 
       <ul>
         {results.map((food, index) => {
+            <button
+                onClick={() => handleLogFood(food)}
+                style={{ marginTop: '0.5rem' }}
+>
+            Log This
+            </button>
+
           const getNutrient = (id) => {
             const nutrient = food.foodNutrients?.find(n => n.nutrientId === id);
             return nutrient ? `${nutrient.value} ${nutrient.unitName}` : 'N/A';
