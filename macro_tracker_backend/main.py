@@ -11,7 +11,23 @@ from .auth import get_current_user
 
 from pydantic import Field
 from fastapi.security import OAuth2PasswordRequestForm
+import os
+import requests
+from fastapi import APIRouter, Query
+from dotenv import load_dotenv
 
+load_dotenv()
+router = APIRouter()
+
+@router.get("/search-food/")
+def search_food(query: str = Query(...)):
+    api_key = os.getenv("USDA_API_KEY")
+    url = "https://api.nal.usda.gov/fdc/v1/foods/search"
+    response = requests.get(url, params={"query": query, "api_key": api_key})
+    return response.json()
+
+app.include_router(admin.router)
+app.include_router(router)
 
 # Create all tables
 models.Base.metadata.create_all(bind=engine)
@@ -103,22 +119,3 @@ from . import schemas, models
 @app.get("/me/", response_model=schemas.UserOut)
 def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
-
-
-import os
-import requests
-from fastapi import APIRouter, Query
-from dotenv import load_dotenv
-
-load_dotenv()
-router = APIRouter()
-
-@router.get("/search-food/")
-def search_food(query: str = Query(...)):
-    api_key = os.getenv("USDA_API_KEY")
-    url = "https://api.nal.usda.gov/fdc/v1/foods/search"
-    response = requests.get(url, params={"query": query, "api_key": api_key})
-    return response.json()
-
-app.include_router(admin.router)
-app.include_router(router)
