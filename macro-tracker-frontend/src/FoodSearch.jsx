@@ -1,36 +1,46 @@
-// src/FoodSearch.jsx
 import { useState } from 'react';
 import axios from 'axios';
 
-function FoodSearch() {
+function SearchFood() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   const [error, setError] = useState('');
 
   const handleSearch = async (e) => {
     e.preventDefault();
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('You must be logged in to search.');
+      return;
+    }
+
     try {
-      const response = await axios.get(`https://macro-tracker-api.onrender.com/search-food/`, {
-        params: { query },
-      });
-      setResults(response.data.foods || []);
+      const res = await axios.get(
+        `https://macro-tracker-api.onrender.com/search-food/`,
+        {
+          params: { query },
+          headers: {
+            Authorization: `Bearer ${token}`, // optional, in case you want to protect
+          },
+        }
+      );
+      setResults(res.data.foods || []);
       setError('');
     } catch (err) {
       console.error(err);
-      setError('Error fetching data');
-      setResults([]);
+      setError('Failed to fetch food data.');
     }
   };
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h2>Search for Food</h2>
+      <h1>Search Foods</h1>
       <form onSubmit={handleSearch}>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="e.g. banana"
+          placeholder="e.g., banana, chicken"
         />
         <button type="submit">Search</button>
       </form>
@@ -38,9 +48,9 @@ function FoodSearch() {
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       <ul>
-        {results.map((item) => (
-          <li key={item.fdcId}>
-            <strong>{item.description}</strong> - Brand: {item.brandOwner || 'N/A'}
+        {results.map((food, index) => (
+          <li key={index}>
+            <strong>{food.description}</strong> {food.brandOwner && `(${food.brandOwner})`}
           </li>
         ))}
       </ul>
@@ -48,4 +58,4 @@ function FoodSearch() {
   );
 }
 
-export default FoodSearch;
+export default SearchFood;
