@@ -19,6 +19,13 @@ function SearchFood() {
     servingSize: '',
     unit: 'gram',
     servings: 1,
+    date: (() => {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, '0');
+      const dd = String(today.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    })(),
     time: '',
     mealType: ''
   });
@@ -55,6 +62,13 @@ function SearchFood() {
       servingSize: '',
       unit: 'gram',
       servings: 1,
+      date: (() => {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+      })(),
       time: '',
       mealType: ''
     });
@@ -79,7 +93,7 @@ function SearchFood() {
       alert('Please select a meal type.');
       return;
     }
-    if (!form.servingSize || !form.unit || !form.servings) {
+    if (!form.servingSize || !form.unit || !form.servings || !form.date) {
       alert('Please fill out all fields.');
       return;
     }
@@ -87,6 +101,12 @@ function SearchFood() {
       const nutrient = modalFood.foodNutrients?.find(n => n.nutrientId === id);
       return nutrient ? nutrient.value : 0;
     };
+    let time_logged;
+    if (form.date && form.time) {
+      time_logged = `${form.date}T${form.time}`;
+    } else if (form.date) {
+      time_logged = `${form.date}T00:00`;
+    }
     const payload = {
       name: modalFood.description,
       protein: Math.round(getNutrientValue(1003)),
@@ -97,7 +117,7 @@ function SearchFood() {
       serving_size: form.servingSize,
       serving_unit: form.unit,
       servings: form.servings,
-      ...(form.time ? { time_logged: form.time } : {})
+      ...(time_logged ? { time_logged } : {})
     };
     try {
       await axios.post('https://macro-tracker-api.onrender.com/foods/', payload, {
@@ -176,8 +196,13 @@ function SearchFood() {
                 <input type="number" name="servings" min="1" step="1" value={form.servings} onChange={handleFormChange} required style={{ width: 60 }} />
               </div>
               <div style={{ marginBottom: '1rem' }}>
+                <label>Date: </label>
+                <input type="date" name="date" value={form.date} onChange={handleFormChange} required />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
                 <label>Time Eaten (optional): </label>
-                <input type="time" name="time" value={form.time} onChange={handleFormChange} />              </div>
+                <input type="time" name="time" value={form.time} onChange={handleFormChange} />
+              </div>
               <div style={{ marginBottom: '1rem' }}>
                 <label>Meal Type: </label>
                 <select name="mealType" value={form.mealType} onChange={handleFormChange} required>

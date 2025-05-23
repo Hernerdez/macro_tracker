@@ -15,6 +15,13 @@ function Dashboard() {
   const [foods, setFoods] = useState([]);
   const [groupedFoods, setGroupedFoods] = useState({});
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState(() => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  });
 
   // Logout handler
   const handleLogout = () => {
@@ -30,39 +37,31 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  // Fetch foods for today
+  // Fetch foods for selected date
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    const todayStr = `${yyyy}-${mm}-${dd}`;
-
+    setLoading(true);
     axios.get('https://macro-tracker-api.onrender.com/foods/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
       .then(res => {
-        // Filter foods for today only (by meal.meal.date or time_logged if available)
-        const foodsToday = (res.data || []).filter(food => {
-          // If food.meal exists and has a date, use that
+        // Filter foods for selected date only (by meal.meal.date or time_logged if available)
+        const foodsForDate = (res.data || []).filter(food => {
           if (food.meal && food.meal.date) {
-            return food.meal.date === todayStr;
+            return food.meal.date === selectedDate;
           }
-          // If time_logged exists, use that
           if (food.time_logged) {
-            return food.time_logged.slice(0, 10) === todayStr;
+            return food.time_logged.slice(0, 10) === selectedDate;
           }
           return false;
         });
-        setFoods(foodsToday);
+        setFoods(foodsForDate);
         // Group by meal_id
         const grouped = {};
-        foodsToday.forEach(food => {
+        foodsForDate.forEach(food => {
           const mealId = food.meal_id;
           if (!grouped[mealId]) grouped[mealId] = [];
           grouped[mealId].push(food);
@@ -74,18 +73,28 @@ function Dashboard() {
         console.error('Error fetching foods:', err);
         setLoading(false);
       });
-  }, []);
+  }, [selectedDate]);
 
   return (
     <div style={{ padding: '2rem' }}>
       <h1>Dashboard</h1>
       <button onClick={handleLogout}>Logout</button>
 
-      <h2>Your Foods for Today</h2>
+      <div style={{ margin: '1rem 0' }}>
+        <label htmlFor="date-picker">Select Date: </label>
+        <input
+          id="date-picker"
+          type="date"
+          value={selectedDate}
+          onChange={e => setSelectedDate(e.target.value)}
+        />
+      </div>
+
+      <h2>Your Foods for {selectedDate}</h2>
       {loading ? (
         <p>Loading...</p>
       ) : Object.keys(groupedFoods).length === 0 ? (
-        <p>No foods logged for today.</p>
+        <p>No foods logged for this date.</p>
       ) : (
         Object.entries(groupedFoods).sort(([a], [b]) => a - b).map(([mealId, foods]) => (
           <div key={mealId} style={{ marginBottom: '2rem' }}>
