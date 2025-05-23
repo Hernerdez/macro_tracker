@@ -37,30 +37,29 @@ function Login() {
     }
   };
 
-  return (
-    <div>
-      <h1>Login</h1>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        /><br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-        /><br />
+return (
+  <div>
+    <h1>Login</h1>
+    <form onSubmit={handleLogin}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+      /><br />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      /><br />
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
 
-        <button type="submit">Login</button>
-      </form>
-
-    </div>
-  );
+      <button type="submit">Login</button>
+    </form>
+  </div>
+);
 }
 
 export default Login;
