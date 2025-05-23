@@ -3,9 +3,18 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
+const MEAL_TYPE_MAP = {
+  1: 'Breakfast',
+  2: 'Lunch',
+  3: 'Dinner',
+  4: 'Sweet Treats'
+};
+
 function Dashboard() {
   const navigate = useNavigate();
-  const [meals, setMeals] = useState([]);
+  const [foods, setFoods] = useState([]);
+  const [groupedFoods, setGroupedFoods] = useState({});
+  const [loading, setLoading] = useState(true);
 
   // Logout handler
   const handleLogout = () => {
@@ -21,18 +30,50 @@ function Dashboard() {
     }
   }, [navigate]);
 
-  // Fetch meals
+  // Fetch foods for today
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
 
-    axios.get('https://macro-tracker-api.onrender.com/meals/', {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`;
+
+    axios.get('https://macro-tracker-api.onrender.com/foods/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then(res => setMeals(res.data))
-      .catch(err => console.error('Error fetching meals:', err));
+      .then(res => {
+        // Filter foods for today only (by meal.meal.date or time_logged if available)
+        const foodsToday = (res.data || []).filter(food => {
+          // If food.meal exists and has a date, use that
+          if (food.meal && food.meal.date) {
+            return food.meal.date === todayStr;
+          }
+          // If time_logged exists, use that
+          if (food.time_logged) {
+            return food.time_logged.slice(0, 10) === todayStr;
+          }
+          return false;
+        });
+        setFoods(foodsToday);
+        // Group by meal_id
+        const grouped = {};
+        foodsToday.forEach(food => {
+          const mealId = food.meal_id;
+          if (!grouped[mealId]) grouped[mealId] = [];
+          grouped[mealId].push(food);
+        });
+        setGroupedFoods(grouped);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error('Error fetching foods:', err);
+        setLoading(false);
+      });
   }, []);
 
   return (
@@ -40,17 +81,30 @@ function Dashboard() {
       <h1>Dashboard</h1>
       <button onClick={handleLogout}>Logout</button>
 
-      <h2>Your Meals</h2>
-      {meals.length === 0 ? (
-        <p>No meals found.</p>
+      <h2>Your Foods for Today</h2>
+      {loading ? (
+        <p>Loading...</p>
+      ) : Object.keys(groupedFoods).length === 0 ? (
+        <p>No foods logged for today.</p>
       ) : (
-        <ul>
-          {meals.map(meal => (
-            <li key={meal.id}>
-              {meal.meal_name} - {meal.date}
-            </li>
-          ))}
-        </ul>
+        Object.entries(groupedFoods).sort(([a], [b]) => a - b).map(([mealId, foods]) => (
+          <div key={mealId} style={{ marginBottom: '2rem' }}>
+            <h3>{MEAL_TYPE_MAP[mealId] || 'Other'}</h3>
+            <ul>
+              {foods.map(food => (
+                <li key={food.id}>
+                  <strong>{food.name}</strong> - {food.calories} kcal, {food.protein}g protein, {food.carbs}g carbs, {food.fats}g fat
+                  {food.serving_size && food.serving_unit && (
+                    <> ({food.serving_size} {food.serving_unit}{food.servings ? ` x${food.servings}` : ''})</>
+                  )}
+                  {food.time_logged && (
+                    <> @ {new Date(food.time_logged).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
       )}
     </div>
   );
