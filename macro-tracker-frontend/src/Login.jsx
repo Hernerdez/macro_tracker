@@ -59,12 +59,6 @@ function Login() {
         <button type="submit">Login</button>
       </form>
 
-      {token && (
-        <div>
-          <h3>Access Token:</h3>
-          <code>{token}</code>
-        </div>
-      )}
     </div>
   );
 }
