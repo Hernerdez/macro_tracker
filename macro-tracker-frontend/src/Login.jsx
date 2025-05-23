@@ -1,5 +1,5 @@
-// src/Login.jsx
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Login() {
@@ -7,6 +7,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -24,12 +25,12 @@ function Login() {
         }
       );
 
-    const accessToken = response.data.access_token;
-    setToken(accessToken);
-    localStorage.setItem('token', accessToken);
-    
+      const accessToken = response.data.access_token;
+      setToken(accessToken);
+      localStorage.setItem('token', accessToken);
       setError('');
       alert('Login successful!');
+      // navigate('/dashboard'); // optional redirect
     } catch (err) {
       console.error(err);
       setError('Invalid email or password');
