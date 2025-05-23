@@ -55,7 +55,7 @@ function SearchFood() {
       servingSize: '',
       unit: 'gram',
       servings: 1,
-      time: new Date().toISOString().slice(0,16),
+      time: '',
       mealType: ''
     });
     setModalOpen(true);
@@ -79,7 +79,7 @@ function SearchFood() {
       alert('Please select a meal type.');
       return;
     }
-    if (!form.servingSize || !form.unit || !form.servings || !form.time) {
+    if (!form.servingSize || !form.unit || !form.servings) {
       alert('Please fill out all fields.');
       return;
     }
@@ -97,7 +97,7 @@ function SearchFood() {
       serving_size: form.servingSize,
       serving_unit: form.unit,
       servings: form.servings,
-      time_logged: form.time
+      ...(form.time ? { time_logged: form.time } : {})
     };
     try {
       await axios.post('https://macro-tracker-api.onrender.com/foods/', payload, {
@@ -176,8 +176,8 @@ function SearchFood() {
                 <input type="number" name="servings" min="1" step="1" value={form.servings} onChange={handleFormChange} required style={{ width: 60 }} />
               </div>
               <div style={{ marginBottom: '1rem' }}>
-                <label>Time Logged: </label>
-                <input type="datetime-local" name="time" value={form.time} onChange={handleFormChange} required />
+                <label>Time Eaten (optional): </label>
+                <input type="datetime-local" name="time" value={form.time} onChange={handleFormChange} />
               </div>
               <div style={{ marginBottom: '1rem' }}>
                 <label>Meal Type: </label>
