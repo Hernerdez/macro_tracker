@@ -30,8 +30,7 @@ const Signup = () => {
     });
 
     console.log(response.data);
-    alert('Signup successful!');
-    navigate('/login');
+    navigate('/dashboard');
   } catch (err) {
     console.error(err);
     alert(err.response?.data?.detail || 'Signup failed');
