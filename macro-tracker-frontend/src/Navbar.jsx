@@ -1,4 +1,3 @@
-// src/Navbar.jsx
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
@@ -13,9 +12,12 @@ const Navbar = () => {
   return (
     <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
       <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
+      <Link to="/search" style={{ marginRight: '1rem' }}>Food Search</Link> {/* ✅ NEW */}
+
       {!token && <Link to="/signup" style={{ marginRight: '1rem' }}>Signup</Link>}
       {!token && <Link to="/login" style={{ marginRight: '1rem' }}>Login</Link>}
       {token && <Link to="/dashboard" style={{ marginRight: '1rem' }}>Dashboard</Link>}
+
       {token && (
         <button onClick={handleLogout} style={{ marginLeft: '1rem' }}>
           Logout

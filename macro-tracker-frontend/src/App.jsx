@@ -5,6 +5,8 @@ import Login from './Login';
 import Dashboard from './Dashboard';
 import ProtectedRoute from './ProtectedRoute';
 import Navbar from './Navbar';
+import FoodSearch from './FoodSearch';
+ 
 
 function App() {
   return (
@@ -14,6 +16,7 @@ function App() {
         <Route path="/" element={<h1>Welcome to Macro Tracker</h1>} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/search" element={<FoodSearch />} />
         <Route
           path="/dashboard"
           element={
