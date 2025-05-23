@@ -19,24 +19,25 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSignup = async (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+ const handleSignup = async (e) => {
+  e.preventDefault();
+  if (!validate()) return;
 
-    try {
-      await axios.post('https://macro-tracker-api.onrender.com/users/', {
-        email,
-        password: password
-        
-      });
-      console.log(response.data);
-      alert('Signup successful!');
-      navigate('/login');
-    } catch (err) {
-      console.error(err);
-      alert('Signup failed');
-    }
-  };
+  try {
+    const response = await axios.post('https://macro-tracker-api.onrender.com/users/', {
+      email,
+      password: password
+    });
+
+    console.log(response.data);
+    alert('Signup successful!');
+    navigate('/login');
+  } catch (err) {
+    console.error(err);
+    alert(err.response?.data?.detail || 'Signup failed');
+  }
+};
+
 
   return (
     <form onSubmit={handleSignup}>
