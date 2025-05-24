@@ -1,4 +1,4 @@
-from .routers import admin
+from routers import admin
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,18 +16,8 @@ import requests
 from fastapi import APIRouter, Query
 from dotenv import load_dotenv
 
+# Load environment variables
 load_dotenv()
-router = APIRouter()
-
-@router.get("/search-food/")
-def search_food(query: str = Query(...)):
-    api_key = os.getenv("USDA_API_KEY")
-    url = "https://api.nal.usda.gov/fdc/v1/foods/search"
-    response = requests.get(url, params={"query": query, "api_key": api_key})
-    return response.json()
-
-app.include_router(admin.router)
-app.include_router(router)
 
 # Create all tables
 models.Base.metadata.create_all(bind=engine)
@@ -39,7 +29,7 @@ print("✅ FastAPI app initialized")
 # Allow frontend to connect (adjust later)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://macro-tracker-gamma.vercel.app"],
+    allow_origins=["https://macro-tracker-gamma.vercel.app", "http://localhost:3000", "http://localhost:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -119,3 +109,23 @@ from . import schemas, models
 @app.get("/me/", response_model=schemas.UserOut)
 def read_users_me(current_user: models.User = Depends(get_current_user)):
     return current_user
+
+
+router = APIRouter()
+
+@router.get("/search-food/")
+def search_food(query: str = Query(...)):
+    api_key = os.getenv("USDA_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="USDA API key not configured")
+    
+    url = "https://api.nal.usda.gov/fdc/v1/foods/search"
+    try:
+        response = requests.get(url, params={"query": query, "api_key": api_key})
+        response.raise_for_status()
+        return response.json()
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching food data: {str(e)}")
+
+app.include_router(admin.router)
+app.include_router(router)
