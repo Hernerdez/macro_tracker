@@ -29,8 +29,6 @@ class MealBase(BaseModel):
     date: date
     meal_name: str
 
-class MealCreate(MealBase):
-    user_id: int
 
 class MealOut(MealBase):
     id: int

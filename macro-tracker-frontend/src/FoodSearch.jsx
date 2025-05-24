@@ -30,6 +30,7 @@ function SearchFood() {
   useEffect(() => {
     const fetchMeals = async () => {
       const token = localStorage.getItem('token');
+      console.log('Token  ', token); // logs the token
       if (!token) return;
 
       try {
@@ -102,6 +103,7 @@ function SearchFood() {
   const handleLogFood = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
+    console.log('Token  ', token); // logs the token
     if (!token) return;
 
     if (!form.mealType) {
