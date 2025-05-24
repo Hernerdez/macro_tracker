@@ -64,12 +64,21 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 # ---------- MEALS ----------
 
 @app.post("/meals/", response_model=schemas.MealOut)
-def create_meal(meal: schemas.MealCreate, db: Session = Depends(get_db)):
-    db_meal = models.Meal(**meal.dict())
+def create_meal(
+    meal: schemas.MealCreate,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)  # 🟢 this grabs the current logged-in user
+):
+    db_meal = models.Meal(
+        date=meal.date,
+        meal_name=meal.meal_name,
+        user_id=current_user.id  # 🟢 auto-assign user_id here
+    )
     db.add(db_meal)
     db.commit()
     db.refresh(db_meal)
     return db_meal
+
 
 @app.get("/meals/", response_model=list[schemas.MealOut])
 def get_my_meals(
