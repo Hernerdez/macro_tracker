@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 const UNITS = ['oz', 'gram', 'lbs', 'kg', 'ml', 'cup', 'tbsp', 'tsp'];
+const MEAL_TYPES = ['Breakfast', 'Lunch', 'Dinner', 'Sweet Treats'];
 
 function SearchFood() {
   const [query, setQuery] = useState('');
@@ -9,8 +10,6 @@ function SearchFood() {
   const [error, setError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalFood, setModalFood] = useState(null);
-  const [meals, setMeals] = useState([]); // ✅ FETCHED MEALS
-
   const [form, setForm] = useState({
     servingSize: '',
     unit: 'gram',
@@ -25,24 +24,6 @@ function SearchFood() {
     time: '',
     mealType: ''
   });
-
-  // ✅ Fetch user's meals on mount
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (!token) return;
-
-    axios.get('https://macro-tracker-api.onrender.com/meals/', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-      .then(res => {
-        setMeals(res.data || []);
-      })
-      .catch(err => {
-        console.error('Error fetching meals:', err);
-      });
-  }, []);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -103,8 +84,9 @@ function SearchFood() {
     e.preventDefault();
     const token = localStorage.getItem('token');
     if (!token) return;
+
     if (!form.mealType) {
-      alert('Please select a meal.');
+      alert('Please select a meal type.');
       return;
     }
     if (!form.servingSize || !form.unit || !form.servings || !form.date) {
@@ -112,37 +94,59 @@ function SearchFood() {
       return;
     }
 
-    const getNutrientValue = (id) => {
-      const nutrient = modalFood.foodNutrients?.find(n => n.nutrientId === id);
-      return nutrient ? nutrient.value : 0;
-    };
-
-    let time_logged;
-    if (form.date && form.time) {
-      time_logged = `${form.date}T${form.time}`;
-    } else if (form.date) {
-      time_logged = `${form.date}T00:00`;
-    }
-
-    const payload = {
-      name: modalFood.description,
-      protein: Math.round(getNutrientValue(1003)),
-      carbs: Math.round(getNutrientValue(1005)),
-      fats: Math.round(getNutrientValue(1004)),
-      calories: Math.round(getNutrientValue(1008)),
-      meal_id: form.mealType, // ✅ user-selected meal_id
-      serving_size: form.servingSize,
-      serving_unit: form.unit,
-      servings: form.servings,
-      ...(time_logged ? { time_logged } : {})
-    };
-
     try {
-      await axios.post('https://macro-tracker-api.onrender.com/foods/', payload, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      // 1️⃣ Check if meal already exists for date + meal type
+      const mealsRes = await axios.get('https://macro-tracker-api.onrender.com/meals/', {
+        headers: { Authorization: `Bearer ${token}` },
       });
+
+      const existingMeal = mealsRes.data.find(
+        (meal) => meal.meal_name === form.mealType && meal.date === form.date
+      );
+
+      let mealId;
+      if (existingMeal) {
+        mealId = existingMeal.id;
+      } else {
+        // 2️⃣ Create a new meal
+        const createMealRes = await axios.post(
+          'https://macro-tracker-api.onrender.com/meals/',
+          { meal_name: form.mealType, date: form.date },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        mealId = createMealRes.data.id;
+      }
+
+      // 3️⃣ Prepare food payload
+      const getNutrientValue = (id) => {
+        const nutrient = modalFood.foodNutrients?.find(n => n.nutrientId === id);
+        return nutrient ? nutrient.value : 0;
+      };
+
+      let time_logged;
+      if (form.date && form.time) {
+        time_logged = `${form.date}T${form.time}`;
+      } else if (form.date) {
+        time_logged = `${form.date}T00:00`;
+      }
+
+      const payload = {
+        name: modalFood.description,
+        protein: Math.round(getNutrientValue(1003)),
+        carbs: Math.round(getNutrientValue(1005)),
+        fats: Math.round(getNutrientValue(1004)),
+        calories: Math.round(getNutrientValue(1008)),
+        meal_id: mealId,
+        serving_size: form.servingSize,
+        serving_unit: form.unit,
+        servings: form.servings,
+        ...(time_logged ? { time_logged } : {})
+      };
+
+      await axios.post('https://macro-tracker-api.onrender.com/foods/', payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       alert(`${modalFood.description} logged!`);
       closeModal();
     } catch (err) {
@@ -182,7 +186,12 @@ function SearchFood() {
                 <li>Carbs: {getNutrient(1005)}</li>
                 <li>Fat: {getNutrient(1004)}</li>
               </ul>
-              <button onClick={() => openModal(food)} style={{ marginTop: '0.5rem' }}>Log This</button>
+              <button
+                onClick={() => openModal(food)}
+                style={{ marginTop: '0.5rem' }}
+              >
+                Log This
+              </button>
             </li>
           );
         })}
@@ -217,11 +226,11 @@ function SearchFood() {
                 <input type="time" name="time" value={form.time} onChange={handleFormChange} />
               </div>
               <div style={{ marginBottom: '1rem' }}>
-                <label>Meal: </label>
+                <label>Meal Type: </label>
                 <select name="mealType" value={form.mealType} onChange={handleFormChange} required>
                   <option value="">Select a meal</option>
-                  {meals.map(meal => (
-                    <option key={meal.id} value={meal.id}>{meal.meal_name} - {meal.date}</option>
+                  {MEAL_TYPES.map(type => (
+                    <option key={type} value={type}>{type}</option>
                   ))}
                 </select>
               </div>
