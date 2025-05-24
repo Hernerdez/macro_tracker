@@ -38,5 +38,10 @@ class Food(Base):
     carbs = Column(Integer)
     fats = Column(Integer)
     calories = Column(Integer)
+    serving_size = Column(Float)
+    serving_unit = Column(String)
+    servings = Column(Integer)
+    time_logged = Column(DateTime, nullable=True)
+
 
     meal = relationship("Meal", back_populates="foods")

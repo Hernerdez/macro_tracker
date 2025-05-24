@@ -12,9 +12,9 @@ class FoodBase(BaseModel):
 
 class FoodCreate(FoodBase):
     meal_id: int
-    serving_size: float = None
-    serving_unit: str = None
-    servings: int = None
+    serving_size: float
+    serving_unit: str
+    servings: int
     time_logged: Optional[str] = None
 class FoodOut(FoodBase):
     id: int
