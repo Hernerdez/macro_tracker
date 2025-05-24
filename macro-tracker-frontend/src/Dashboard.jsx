@@ -42,7 +42,7 @@ function Dashboard() {
     const token = localStorage.getItem('token');
     if (!token) return;
     setLoading(true);
-    axios.get('https://macro-tracker-api.onrender.com/foods/', {
+    axios.get('https://macro-tracker-api.onrender.com/dashboard/', {
       headers: {
         Authorization: `Bearer ${token}`,
       },

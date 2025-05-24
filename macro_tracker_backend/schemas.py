@@ -36,6 +36,7 @@ class MealCreate(BaseModel):
 class MealOut(MealBase):
     id: int
     user_id: int
+    foods: list[FoodOut] = []
 
     class Config:
         orm_mode = True

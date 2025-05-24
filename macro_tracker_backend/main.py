@@ -142,3 +142,14 @@ def search_food(query: str = Query(...)):
 
 app.include_router(admin.router)
 app.include_router(router)
+
+@app.get("/dashboard/", response_model=list[schemas.MealOut])
+def dashboard(
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user)
+):
+    meals = db.query(models.Meal).filter(models.Meal.user_id == current_user.id).all()
+    for meal in meals:
+        meal.foods = db.query(models.Food).filter(models.Food.meal_id == meal.id).all()
+    return meals
+
