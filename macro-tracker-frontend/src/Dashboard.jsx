@@ -29,7 +29,7 @@ function Dashboard() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) return;
-
+  
     setLoading(true);
     axios.get('https://macro-tracker-api.onrender.com/dashboard/', {
       headers: {
@@ -39,6 +39,13 @@ function Dashboard() {
       .then(res => {
         // Filter meals for selected date
         const mealsForDate = (res.data || []).filter(meal => meal.date === selectedDate);
+  
+        // 1️⃣ Sort meals by the desired order
+        const MEAL_ORDER = ['Breakfast', 'Lunch', 'Dinner', 'Sweet Treats'];
+        mealsForDate.sort((a, b) => {
+          return MEAL_ORDER.indexOf(a.meal_name) - MEAL_ORDER.indexOf(b.meal_name);
+        });
+  
         setMeals(mealsForDate);
         setLoading(false);
       })
