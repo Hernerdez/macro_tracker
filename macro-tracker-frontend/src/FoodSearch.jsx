@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const UNITS = ['oz', 'gram', 'lbs', 'kg', 'ml', 'cup', 'tbsp', 'tsp'];
@@ -10,6 +10,7 @@ function SearchFood() {
   const [error, setError] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalFood, setModalFood] = useState(null);
+  const [meals, setMeals] = useState([]); // 🌟 Store fetched meals
   const [form, setForm] = useState({
     servingSize: '',
     unit: 'gram',
@@ -25,6 +26,25 @@ function SearchFood() {
     mealType: ''
   });
 
+  // 🌟 Fetch meals when page loads
+  useEffect(() => {
+    const fetchMeals = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const res = await axios.get('https://macro-tracker-api.onrender.com/meals/', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setMeals(res.data || []);
+      } catch (err) {
+        console.error('Failed to fetch meals:', err);
+      }
+    };
+
+    fetchMeals();
+  }, []);
+
   const handleSearch = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('token');
@@ -35,12 +55,10 @@ function SearchFood() {
 
     try {
       const res = await axios.get(
-        `https://macro-tracker-api.onrender.com/search-food/`,
+        'https://macro-tracker-api.onrender.com/search-food/',
         {
           params: { query },
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
       setResults(res.data.foods || []);
@@ -53,7 +71,8 @@ function SearchFood() {
 
   const openModal = (food) => {
     setModalFood(food);
-    setForm({
+    setForm(prev => ({
+      ...prev,
       servingSize: '',
       unit: 'gram',
       servings: 1,
@@ -66,7 +85,7 @@ function SearchFood() {
       })(),
       time: '',
       mealType: ''
-    });
+    }));
     setModalOpen(true);
   };
 
@@ -95,40 +114,31 @@ function SearchFood() {
     }
 
     try {
-      // 1️⃣ Check if meal already exists for date + meal type
-      const mealsRes = await axios.get('https://macro-tracker-api.onrender.com/meals/', {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const existingMeal = mealsRes.data.find(
+      // 1️⃣ Check if meal already exists
+      let selectedMeal = meals.find(
         (meal) => meal.meal_name === form.mealType && meal.date === form.date
       );
 
-      let mealId;
-      if (existingMeal) {
-        mealId = existingMeal.id;
-      } else {
-        // 2️⃣ Create a new meal
-        const createMealRes = await axios.post(
+      // 2️⃣ If not, create the meal
+      if (!selectedMeal) {
+        const res = await axios.post(
           'https://macro-tracker-api.onrender.com/meals/',
           { meal_name: form.mealType, date: form.date },
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        mealId = createMealRes.data.id;
+        selectedMeal = res.data;
+        setMeals(prev => [...prev, selectedMeal]);
       }
 
-      // 3️⃣ Prepare food payload
+      // 3️⃣ Build payload for food logging
       const getNutrientValue = (id) => {
         const nutrient = modalFood.foodNutrients?.find(n => n.nutrientId === id);
         return nutrient ? nutrient.value : 0;
       };
 
-      let time_logged;
-      if (form.date && form.time) {
-        time_logged = `${form.date}T${form.time}`;
-      } else if (form.date) {
-        time_logged = `${form.date}T00:00`;
-      }
+      const time_logged = form.date && form.time
+        ? `${form.date}T${form.time}`
+        : `${form.date}T00:00`;
 
       const payload = {
         name: modalFood.description,
@@ -136,15 +146,15 @@ function SearchFood() {
         carbs: Math.round(getNutrientValue(1005)),
         fats: Math.round(getNutrientValue(1004)),
         calories: Math.round(getNutrientValue(1008)),
-        meal_id: mealId,
+        meal_id: selectedMeal.id,
         serving_size: form.servingSize,
         serving_unit: form.unit,
         servings: form.servings,
-        ...(time_logged ? { time_logged } : {})
+        time_logged
       };
 
       await axios.post('https://macro-tracker-api.onrender.com/foods/', payload, {
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` }
       });
 
       alert(`${modalFood.description} logged!`);
