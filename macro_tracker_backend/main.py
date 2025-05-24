@@ -29,11 +29,15 @@ print("✅ FastAPI app initialized")
 # Allow frontend to connect (adjust later)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://macro-tracker-gamma.vercel.app", "http://localhost:3000", "http://localhost:5173"],
+    allow_origins=[
+        "https://macro-tracker-gamma.vercel.app",  # ✅ Frontend domain
+        "http://localhost:3000",                   # ✅ Local dev
+        "http://localhost:5173",                   # ✅ Local dev
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
+)   
 
 # Dependency to get DB session
 def get_db():
