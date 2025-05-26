@@ -1,0 +1,4 @@
+root: C:\Users\rhjrg\Documents\GitHub\macro_tracker 
+path: C:\Program Files\nodejs 
+arch: 64 
+proxy: none
