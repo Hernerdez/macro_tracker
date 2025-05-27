@@ -11,14 +11,16 @@ const Navbar = () => {
 
   return (
     <div className="relative z-10 flex flex-col items-center text-center">
-      <div className="w-full flex justify-center pt-4">
-        <button
-          onClick={handleLogout}
-          className="px-8 py-3 bg-blue-600 text-white rounded-lg shadow transition duration-300 hover:bg-blue-700"
-        >
-          Logout
-        </button>
-      </div>
+      {token && (
+        <div className="w-full flex justify-center pt-4">
+          <button
+            onClick={handleLogout}
+            className="px-8 py-3 bg-blue-600 text-white rounded-lg shadow transition duration-300 hover:bg-blue-700"
+          >
+            Logout
+          </button>
+        </div>
+      )}
       <nav style={{ padding: '1rem', borderBottom: '1px solid #ccc' }}>
         <Link to="/" style={{ marginRight: '1rem' }}>Home</Link>
         {!token && <Link to="/signup" style={{ marginRight: '1rem' }}>Signup</Link>}
