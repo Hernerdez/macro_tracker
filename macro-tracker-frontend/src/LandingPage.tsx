@@ -18,7 +18,7 @@ const LandingPage: React.FC = () => {
   }, [])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden relative">
       {/* Curved Side Bars */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Left curved sidebar */}
@@ -69,8 +69,8 @@ const LandingPage: React.FC = () => {
         </nav>
       </header>
 
-      {/* Main Content - Now perfectly centered */}
-      <main className="relative z-10 min-h-screen flex items-center justify-center">
+      {/* Main Content - Perfectly centered in viewport */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center">
         <div className="max-w-4xl w-full mx-auto text-center px-4">
           {/* Hero Text */}
           <div
@@ -175,7 +175,7 @@ const LandingPage: React.FC = () => {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   )
 }
