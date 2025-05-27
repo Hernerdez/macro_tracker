@@ -43,12 +43,12 @@ export default function LandingPage() {
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <div className="w-4 h-4 bg-white rounded-sm"></div>
             </div>
-            <span className="text-xl font-semibold text-gray-900">earnwave</span>
+            <span className="text-xl font-semibold text-gray-900">macro tracker</span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
             <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">About</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">For business</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Media</a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Pricing</a>
             <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
           </div>
           <button
@@ -65,9 +65,9 @@ export default function LandingPage() {
         <div className="max-w-4xl w-full mx-auto text-center px-4">
           {/* Hero Text */}
           <div className={`mb-16 transition-all duration-1000 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">Connect. Learn. Earn</h1>
+            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">Track. Analyze. Improve.</h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-              Your data is a profitable asset. With Macro Tracker you control what data to share anonymously and earn from it.
+              Take control of your nutrition journey with Macro Tracker. Log meals, track macros, and achieve your health goals.
             </p>
             {/* Indicator dots */}
             <div className="flex justify-center space-x-2 mb-12">
@@ -78,20 +78,20 @@ export default function LandingPage() {
           </div>
           {/* Cards */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
-            {/* Earnings Card */}
+            {/* Track Card */}
             <div className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
                 showCards[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}>
               <div className="h-full flex flex-col justify-center items-center text-center">
-                <p className="text-gray-500 text-sm mb-4">Your earnings</p>
-                <div className="text-5xl font-bold text-gray-900 mb-6">$30.00</div>
+                <p className="text-gray-500 text-sm mb-4">Track your meals</p>
+                <div className="text-5xl font-bold text-gray-900 mb-6">2,500</div>
                 <div className="w-full h-16 mb-4">
                   <svg viewBox="0 0 200 60" className="w-full h-full">
                     <path d="M10,40 Q50,20 100,30 T190,25" stroke="#e5e7eb" strokeWidth="2" fill="none" />
                   </svg>
                 </div>
                 <p className="text-xs text-gray-400">
-                  Next payout in: <span className="font-medium">10,550 pts</span>
+                  Daily calorie goal: <span className="font-medium">2,500 kcal</span>
                 </p>
               </div>
             </div>
@@ -108,10 +108,10 @@ export default function LandingPage() {
                 {/* App Icons */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">uber</span>
+                    <span className="text-white font-bold text-sm">MT</span>
                   </div>
                   <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">a</span>
+                    <span className="text-white font-bold text-lg">F</span>
                   </div>
                   <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
                     <div className="w-6 h-6 bg-white rounded-full"></div>
@@ -135,9 +135,9 @@ export default function LandingPage() {
                   <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
                 </div>
                 <div className="space-y-4 mb-6">
-                  <div className="text-sm text-gray-600">Any products I should be interested in?</div>
-                  <div className="text-sm text-gray-600">Where do I mostly shop during winter season?</div>
-                  <div className="text-sm text-gray-600">How much money I saved on discounts?</div>
+                  <div className="text-sm text-gray-600">What's my protein intake?</div>
+                  <div className="text-sm text-gray-600">Am I meeting my macro goals?</div>
+                  <div className="text-sm text-gray-600">How can I improve my diet?</div>
                 </div>
                 <div className="flex items-center justify-between w-full">
                   <div>
