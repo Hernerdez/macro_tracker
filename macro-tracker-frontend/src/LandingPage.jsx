@@ -25,7 +25,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-white flex items-center justify-center">
+    <div className="relative min-h-screen bg-white flex items-center justify-center overflow-x-hidden">
       {/* Log In button pinned to top right */}
       <div className="fixed top-4 right-8 z-50">
         <button
