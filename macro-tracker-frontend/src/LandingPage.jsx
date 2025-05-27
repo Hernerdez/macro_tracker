@@ -37,12 +37,12 @@ export default function LandingPage() {
       </div>
       {/* Side Bars */}
       <div
-        className={`fixed left-0 top-0 w-32 h-screen bg-red-500 border-4 border-black z-50 transition-all duration-700 ${
+        className={`fixed left-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-50 transition-all duration-700 ${
           showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
         }`}
       />
       <div
-        className={`fixed right-0 top-0 w-32 h-screen bg-blue-500 border-4 border-black z-50 transition-all duration-700 ${
+        className={`fixed right-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-50 transition-all duration-700 ${
           showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
         }`}
       />
