@@ -1,129 +1,93 @@
-// src/LandingPage.jsx
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LandingPage() {
   const navigate = useNavigate();
-  const [showBars, setShowBars] = useState(false);
-  const [showHeadline, setShowHeadline] = useState(false);
-  const [showSub, setShowSub] = useState(false);
+  const [showContent, setShowContent] = useState(false);
   const [showCards, setShowCards] = useState([false, false, false]);
-  const [showLoginFade, setShowLoginFade] = useState(false);
+  const [showSidebars, setShowSidebars] = useState(false);
 
   useEffect(() => {
-    setTimeout(() => setShowBars(true), 100);
-    setTimeout(() => setShowHeadline(true), 700);
-    setTimeout(() => setShowSub(true), 1200);
-    setTimeout(() => setShowCards([false, true, false]), 1700); // middle
-    setTimeout(() => setShowCards([true, true, false]), 2000); // left
-    setTimeout(() => setShowCards([true, true, true]), 2300); // right
+    setTimeout(() => setShowSidebars(true), 100);
+    setTimeout(() => setShowContent(true), 600);
+    setTimeout(() => setShowCards([false, true, false]), 1100);
+    setTimeout(() => setShowCards([true, true, false]), 1400);
+    setTimeout(() => setShowCards([true, true, true]), 1700);
   }, []);
 
-  const handleLogin = () => {
-    setShowLoginFade(true);
-    setTimeout(() => navigate('/login'), 600);
-  };
-
   return (
-    <div className="relative min-h-screen bg-white flex items-center justify-center">
-      {/* Log In button pinned to top right */}
-      <div className="fixed top-4 right-8 z-50">
-        <button
-          onClick={handleLogin}
-          className="px-8 py-3 bg-blue-600 text-white rounded-lg shadow transition duration-300 hover:bg-blue-700"
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Curved Side Bars */}
+      <div className="fixed inset-0 pointer-events-none z-0">
+        <div
+          className={`absolute left-0 top-0 h-full w-32 transition-transform duration-1000 ease-out ${
+            showSidebars ? "translate-y-0" : "translate-y-full"
+          }`}
         >
-          Log In
-        </button>
+          <svg className="h-full w-full" viewBox="0 0 128 800" preserveAspectRatio="none" fill="none">
+            <path d="M0,0 L0,800 L64,800 Q128,400 64,0 L0,0 Z" fill="rgba(156, 163, 175, 0.3)" />
+            <path d="M0,0 L0,800 L48,800 Q96,400 48,0 L0,0 Z" fill="rgba(156, 163, 175, 0.5)" />
+          </svg>
+        </div>
+        <div
+          className={`absolute right-0 top-0 h-full w-32 transition-transform duration-1000 ease-out ${
+            showSidebars ? "translate-y-0" : "translate-y-full"
+          }`}
+        >
+          <svg className="h-full w-full" viewBox="0 0 128 800" preserveAspectRatio="none" fill="none">
+            <path d="M128,0 L128,800 L64,800 Q0,400 64,0 L128,0 Z" fill="rgba(156, 163, 175, 0.3)" />
+            <path d="M128,0 L128,800 L80,800 Q32,400 80,0 L128,0 Z" fill="rgba(156, 163, 175, 0.5)" />
+          </svg>
+        </div>
       </div>
-      {/* Side Bars */}
-{/* Left Bar */}
-<div
-  className={`
-    fixed left-0 bottom-0 w-32 h-full bg-red-500 shadow-lg hover:shadow-2xl
-    rounded-t-3xl z-50
-    transform transition-all transition-shadow duration-700 ease-out
-    ${showBars ? 'translate-y-0 opacity-100 !important' : 'translate-y-full opacity-0'}
-  `}
-/>
 
-{/* Right Bar */}
-<div
-  className={`
-    fixed right-0 bottom-0 w-32 h-full bg-red-500 shadow-lg hover:shadow-2xl
-    rounded-t-3xl z-50
-    transform transition-all transition-shadow duration-700 ease-out
-    ${showBars ? 'translate-y-0 opacity-100 !important' : 'translate-y-full opacity-0'}
-  `}
-/>
+      {/* Header */}
+      <header className="relative z-10 w-full px-6 py-4">
+        <nav className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+              <div className="w-4 h-4 bg-white rounded-sm"></div>
+            </div>
+            <span className="text-xl font-semibold text-gray-900">earnwave</span>
+          </div>
+
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">About</a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">For business</a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Media</a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
+          </div>
+
+          <button
+            onClick={() => navigate("/signup")}
+            className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
+          >
+            Sign up
+          </button>
+        </nav>
+      </header>
 
       {/* Main Content */}
-      <div className="relative z-40 flex flex-col items-center">
-        <h1 className={`text-5xl font-bold mb-4 transition-opacity duration-700 !text-black ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
-          Connect. Learn. Earn.
-        </h1>
-        <p className={`mb-8 transition-opacity duration-700 !text-black ${showSub ? 'opacity-100' : 'opacity-0'}`}>
-          Your data is a profitable asset. With Macro Tracker, you control what data to share anonymously and earn from it.
-        </p>
-        {/* Logos */}
-        <div className={`flex space-x-4 mb-8 transition-opacity duration-700 ${showSub ? 'opacity-100' : 'opacity-0'}`}>
-          {/* Replace with your own logos */}
-          <span className="w-10 h-10 bg-black rounded-full flex items-center justify-center text-white font-bold">U</span>
-          <span className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">S</span>
-          <span className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold">A</span>
-          <span className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">N</span>
-        </div>
-        {/* Cards */}
-        <div className="flex space-x-6">
-          {/* Left Card */}
-          <div
-            className={`w-64 h-64 bg-white rounded-2xl shadow-lg transition-all duration-700
-              ${showCards[0] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-              hover:rotate-[-6deg] hover:scale-105`}
-            style={{ transitionDelay: `200ms` }}
-          >
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="text-gray-400 mb-2">Your earnings</div>
-              <div className="text-3xl font-bold">$30.00</div>
-              <div className="text-xs text-gray-500 mt-2">Next payout in: 10,550 pts</div>
+      <main className="relative z-10 flex-1 flex items-center justify-center px-6 py-12">
+        <div className="max-w-6xl mx-auto text-center">
+          <div className={`mb-16 transition-all duration-1000 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">Connect. Learn. Earn</h1>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
+              Your data is a profitable asset. With Macro Tracker you control what data to share anonymously and earn from it.
+            </p>
+            <div className="flex justify-center space-x-2 mb-12">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <div key={i} className={`w-2 h-2 rounded-full ${i === 2 ? "bg-gray-400" : "bg-gray-200"}`} />
+              ))}
             </div>
           </div>
-          {/* Middle Card */}
-          <div
-            className={`w-64 h-64 bg-white rounded-2xl shadow-lg transition-all duration-700
-              ${showCards[1] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-              hover:rotate-[-3deg] hover:scale-105`}
-            style={{ transitionDelay: `0ms` }}
-          >
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="text-lg font-semibold mb-2">Connect sources</div>
-              <div className="flex space-x-2">
-                <span className="w-8 h-8 bg-black rounded-full flex items-center justify-center text-white font-bold">U</span>
-                <span className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">S</span>
-                <span className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold">A</span>
-                <span className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">N</span>
-              </div>
-            </div>
-          </div>
-          {/* Right Card */}
-          <div
-            className={`w-64 h-64 bg-white rounded-2xl shadow-lg transition-all duration-700
-              ${showCards[2] ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}
-              hover:rotate-[6deg] hover:scale-105`}
-            style={{ transitionDelay: `400ms` }}
-          >
-            <div className="flex flex-col items-center justify-center h-full">
-              <div className="text-gray-400 mb-2">Learn more from your data</div>
-              <div className="text-sm text-gray-600">Make better decisions</div>
-            </div>
+
+          {/* Cards */}
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+            {/* Cards… (use your final Card JSX as above for each) */}
           </div>
         </div>
-      </div>
-      {/* Fade overlay for login */}
-      {showLoginFade && (
-        <div className="fixed inset-0 bg-white bg-opacity-80 flex items-center justify-center animate-fade-in z-50">
-          <span className="text-2xl font-bold text-blue-600">Loading...</span>
-        </div>
-      )}
+      </main>
     </div>
   );
 }
