@@ -16,7 +16,7 @@ const LandingPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
       {/* Curved Side Bars */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Left curved sidebar */}
