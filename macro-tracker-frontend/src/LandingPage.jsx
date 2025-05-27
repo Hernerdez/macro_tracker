@@ -32,10 +32,10 @@ export default function LandingPage() {
       
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center pt-24">
-        <h1 className={`text-5xl font-bold mb-4 transition-opacity duration-700 ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
+        <h1 className={`text-5xl font-bold mb-4 transition-opacity duration-700 text-black ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
           Connect. Learn. Earn.
         </h1>
-        <p className={`mb-8 text-gray-600 transition-opacity duration-700 ${showSub ? 'opacity-100' : 'opacity-0'}`}>
+        <p className={`mb-8 transition-opacity duration-700 text-black ${showSub ? 'opacity-100' : 'opacity-0'}`}>
           Your data is a profitable asset. With Macro Tracker, you control what data to share anonymously and earn from it.
         </p>
         {/* Logos */}
