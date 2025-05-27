@@ -36,8 +36,8 @@ export default function LandingPage() {
         </button>
       </div>
       {/* Side Bars */}
-      <div className="absolute left-0 bottom-0 w-32 h-screen bg-gray-400 rounded-t-3xl z-20 ..."></div>
-      <div className="absolute right-0 bottom-0 w-32 h-screen bg-gray-400 rounded-t-3xl z-20 ..."></div>
+      <div className="absolute left-0 bottom-0 w-32 h-screen bg-gray-400 rounded-t-3xl z-20 translate-y-0 opacity-100"></div>
+      <div className="absolute right-0 bottom-0 w-32 h-screen bg-gray-400 rounded-t-3xl z-20 translate-y-0 opacity-100"></div>
       
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center">
