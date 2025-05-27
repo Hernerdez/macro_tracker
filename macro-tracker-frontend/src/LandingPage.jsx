@@ -25,7 +25,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-white overflow-hidden flex flex-col items-center justify-center">
+    <div className="relative min-h-screen bg-white flex items-center justify-center">
       {/* Log In button pinned to top right */}
       <div className="fixed top-4 right-8 z-50">
         <button
@@ -40,7 +40,7 @@ export default function LandingPage() {
       <div className={`absolute right-0 bottom-0 w-32 h-3/4 bg-gray-200 rounded-t-3xl transition-all duration-700 ${showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}></div>
       
       {/* Main Content */}
-      <div className="relative z-10 flex flex-col items-center pt-24">
+      <div className="relative z-10 flex flex-col items-center">
         <h1 className={`text-5xl font-bold mb-4 transition-opacity duration-700 !text-black ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
           Connect. Learn. Earn.
         </h1>
