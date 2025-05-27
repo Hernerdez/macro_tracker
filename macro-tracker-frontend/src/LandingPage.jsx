@@ -36,15 +36,16 @@ export default function LandingPage() {
         </button>
       </div>
       {/* Side Bars */}
-      <div style={{
-        position: 'absolute',
-        left: 0,
-        bottom: 0,
-        width: '100px',
-        height: '100vh',
-        background: 'red',
-        zIndex: 9999
-      }}></div>
+      <div
+        className={`absolute left-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-20 transition-all duration-700 ${
+          showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+        }`}
+      />
+      <div
+        className={`absolute right-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-20 transition-all duration-700 ${
+          showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
+        }`}
+      />
       
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center">
