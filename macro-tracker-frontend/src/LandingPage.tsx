@@ -1,37 +1,21 @@
 "use client"
 
-import { useNavigate } from 'react-router-dom'
+import type React from "react"
+
+import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
-export default function LandingPage() {
+const LandingPage: React.FC = () => {
   const navigate = useNavigate()
-  const [showContent, setShowContent] = useState(false)
-  const [showCards, setShowCards] = useState([false, false, false])
+  const [showContent, setShowContent] = useState<boolean>(false)
+  const [showCards, setShowCards] = useState<boolean[]>([false, false, false])
 
   useEffect(() => {
-    // Use requestAnimationFrame for smoother animations
-    const timeouts: number[] = []
-
-    timeouts.push(setTimeout(() => setShowContent(true), 600))
-    timeouts.push(setTimeout(() => setShowCards([false, true, false]), 1100))
-    timeouts.push(setTimeout(() => setShowCards([true, true, false]), 1400))
-    timeouts.push(setTimeout(() => setShowCards([true, true, true]), 1700))
-
-    // Cleanup timeouts on unmount
-    return () => {
-      timeouts.forEach((timeout) => clearTimeout(timeout))
-    }
+    setTimeout(() => setShowContent(true), 600)
+    setTimeout(() => setShowCards([false, true, false]), 1100)
+    setTimeout(() => setShowCards([true, true, false]), 1400)
+    setTimeout(() => setShowCards([true, true, true]), 1700)
   }, [])
-
-  const handleSignupClick = () => {
-    try {
-      navigate('/signup')
-    } catch (error) {
-      console.log("Navigation error:", error)
-      // Fallback for navigation issues
-      window.location.href = "/signup"
-    }
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden relative">
@@ -39,21 +23,21 @@ export default function LandingPage() {
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Left curved sidebar */}
         <div className="absolute left-0 top-0 h-screen w-32">
-          <svg className="h-full w-full" viewBox="0 0 128 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="h-full w-full" viewBox="0 0 128 900" fill="none">
             <path d="M0,0 L0,900 L64,900 Q128,450 64,0 L0,0 Z" fill="rgba(156,163,175,0.15)" />
             <path d="M0,0 L0,900 L48,900 Q96,450 48,0 L0,0 Z" fill="rgba(156,163,175,0.25)" />
           </svg>
         </div>
         {/* Right curved sidebar */}
         <div className="absolute right-0 top-0 h-screen w-32">
-          <svg className="h-full w-full" viewBox="0 0 128 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg className="h-full w-full" viewBox="0 0 128 900" fill="none">
             <path d="M128,0 L128,900 L64,900 Q0,450 64,0 L128,0 Z" fill="rgba(156,163,175,0.15)" />
             <path d="M128,0 L128,900 L80,900 Q32,450 80,0 L128,0 Z" fill="rgba(156,163,175,0.25)" />
           </svg>
         </div>
       </div>
 
-      {/* Header */}
+      {/* Header - Positioned absolutely to not affect layout */}
       <header className="absolute top-0 left-0 right-0 z-10 w-full px-4 py-4">
         <nav className="max-w-4xl mx-auto flex items-center justify-center space-x-8">
           <div className="flex items-center space-x-2">
@@ -63,52 +47,46 @@ export default function LandingPage() {
             <span className="text-xl font-semibold text-gray-900">macro tracker</span>
           </div>
           <div className="hidden md:flex items-center space-x-8">
-            <button type="button" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
               About
-            </button>
-            <button type="button" className="text-gray-600 hover:text-gray-900 transition-colors">
+            </a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
               Features
-            </button>
-            <button type="button" className="text-gray-600 hover:text-gray-900 transition-colors">
+            </a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
               Pricing
-            </button>
-            <button type="button" className="text-gray-600 hover:text-gray-900 transition-colors">
+            </a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
               Blog
-            </button>
+            </a>
           </div>
           <button
-            type="button"
-            onClick={handleSignupClick}
-            className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors"
+            onClick={() => navigate("/signup")}
+            className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
           >
             Sign up
           </button>
         </nav>
       </header>
 
-      {/* Main Content */}
-      <div className="absolute inset-0 pt-20 z-10 flex items-center justify-center">
-        <div className="max-w-3xl w-full mx-auto text-center px-4">
+      {/* Main Content - Perfectly centered in viewport */}
+      <div className="absolute inset-0 z-10 flex items-center justify-center">
+        <div className="max-w-4xl w-full mx-auto text-center px-4">
           {/* Hero Text */}
           <div
-            className={`mb-12 transition-all duration-1000 ease-out ${
-              showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`mb-16 transition-all duration-1000 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           >
-            <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
               Track. Analyze. Improve.
             </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
               Take control of your nutrition journey with Macro Tracker. Log meals, track macros, and achieve your
               health goals.
             </p>
             {/* Indicator dots */}
             <div className="flex justify-center space-x-2 mb-12">
               {[0, 1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  className={`w-2 h-2 rounded-full transition-colors ${i === 2 ? "bg-gray-400" : "bg-gray-200"}`}
-                />
+                <div key={i} className={`w-2 h-2 rounded-full ${i === 2 ? "bg-gray-400" : "bg-gray-200"}`} />
               ))}
             </div>
           </div>
@@ -117,7 +95,7 @@ export default function LandingPage() {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
             {/* Track Card */}
             <div
-              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 ease-out hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
+              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
                 showCards[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -125,7 +103,7 @@ export default function LandingPage() {
                 <p className="text-gray-500 text-sm mb-4">Track your meals</p>
                 <div className="text-5xl font-bold text-gray-900 mb-6">2,500</div>
                 <div className="w-full h-16 mb-4">
-                  <svg viewBox="0 0 200 60" className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                  <svg viewBox="0 0 200 60" className="w-full h-full">
                     <path d="M10,40 Q50,20 100,30 T190,25" stroke="#e5e7eb" strokeWidth="2" fill="none" />
                   </svg>
                 </div>
@@ -137,7 +115,7 @@ export default function LandingPage() {
 
             {/* Connect Sources Card */}
             <div
-              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 ease-out hover:shadow-xl hover:rotate-1 hover:scale-105 ${
+              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-1 hover:scale-105 ${
                 showCards[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -163,10 +141,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 {/* App Store Button */}
-                <button
-                  type="button"
-                  className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-full text-sm transition-colors"
-                >
+                <button className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-full text-sm">
                   📱 Download on the App Store
                 </button>
               </div>
@@ -174,7 +149,7 @@ export default function LandingPage() {
 
             {/* Learn More Card */}
             <div
-              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 ease-out hover:shadow-xl hover:rotate-2 hover:scale-105 ${
+              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-2 hover:scale-105 ${
                 showCards[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -183,7 +158,7 @@ export default function LandingPage() {
                   <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
                 </div>
                 <div className="space-y-4 mb-6">
-                  <div className="text-sm text-gray-600">{"What's my protein intake?"}</div>
+                  <div className="text-sm text-gray-600">What's my protein intake?</div>
                   <div className="text-sm text-gray-600">Am I meeting my macro goals?</div>
                   <div className="text-sm text-gray-600">How can I improve my diet?</div>
                 </div>
@@ -204,3 +179,5 @@ export default function LandingPage() {
     </div>
   )
 }
+
+export default LandingPage
