@@ -36,17 +36,23 @@ export default function LandingPage() {
         </button>
       </div>
       {/* Side Bars */}
-      <div
-        className={`fixed left-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-50 transition-all duration-700 ${
-          showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-        }`}
-      />
-      <div
-        className={`fixed right-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-50 transition-all duration-700 ${
-          showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'
-        }`}
-      />
-      
+     {/* Left Bar */}
+<div
+  className={`
+    fixed left-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-50
+    transform transition-all duration-700 ease-out
+    ${showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}
+  `}
+/>
+
+{/* Right Bar */}
+<div
+  className={`
+    fixed right-0 bottom-0 w-32 h-3/4 bg-gray-400 rounded-t-3xl z-50
+    transform transition-all duration-700 ease-out
+    ${showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}
+  `}
+/>
       {/* Main Content */}
       <div className="relative z-40 flex flex-col items-center">
         <h1 className={`text-5xl font-bold mb-4 transition-opacity duration-700 !text-black ${showHeadline ? 'opacity-100' : 'opacity-0'}`}>
