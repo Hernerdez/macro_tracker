@@ -39,20 +39,20 @@ export default function LandingPage() {
 {/* Left Bar */}
 <div
   className={`
-    fixed left-0 bottom-0 w-32 h-3/4 bg-gray-400 shadow-lg hover:shadow-2xl
+    fixed left-0 bottom-0 w-32 h-full bg-red-500 shadow-lg hover:shadow-2xl
     rounded-t-3xl z-50
     transform transition-all transition-shadow duration-700 ease-out
-    ${showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}
+    ${showBars ? 'translate-y-0 opacity-100 !important' : 'translate-y-full opacity-0'}
   `}
 />
 
 {/* Right Bar */}
 <div
   className={`
-    fixed right-0 bottom-0 w-32 h-3/4 bg-gray-400 shadow-lg hover:shadow-2xl
+    fixed right-0 bottom-0 w-32 h-full bg-red-500 shadow-lg hover:shadow-2xl
     rounded-t-3xl z-50
     transform transition-all transition-shadow duration-700 ease-out
-    ${showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}
+    ${showBars ? 'translate-y-0 opacity-100 !important' : 'translate-y-full opacity-0'}
   `}
 />
 
