@@ -1,10 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-interface CardState {
-  [key: number]: boolean;
-}
-
 const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [showContent, setShowContent] = useState<boolean>(false);
