@@ -31,6 +31,7 @@ export default function LandingPage() {
           Log In
         </button>
       </div>
+      <img src="/path/to/your/logo.png" alt="Logo" className="w-10 h-10 rounded-full" />
     </div>
   );
 }
