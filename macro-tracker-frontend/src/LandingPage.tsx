@@ -5,10 +5,8 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [showContent, setShowContent] = useState<boolean>(false);
   const [showCards, setShowCards] = useState<boolean[]>([false, false, false]);
-//  const [showSidebars, setShowSidebars] = useState<boolean>(false);
 
   useEffect(() => {
-   // setTimeout(() => setShowSidebars(true), 100);
     setTimeout(() => setShowContent(true), 600);
     setTimeout(() => setShowCards([false, true, false]), 1100);
     setTimeout(() => setShowCards([true, true, false]), 1400);
@@ -16,18 +14,18 @@ const LandingPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+    <div className="relative min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
       {/* Curved Side Bars */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Left curved sidebar */}
-        <div className="absolute left-0 top-0 h-screen w-32">
+        <div className="absolute left-0 top-0 h-full w-32">
           <svg className="h-full w-full" viewBox="0 0 128 900" fill="none">
             <path d="M0,0 L0,900 L64,900 Q128,450 64,0 L0,0 Z" fill="rgba(156,163,175,0.15)" />
             <path d="M0,0 L0,900 L48,900 Q96,450 48,0 L0,0 Z" fill="rgba(156,163,175,0.25)" />
           </svg>
         </div>
         {/* Right curved sidebar */}
-        <div className="absolute right-0 top-0 h-screen w-32">
+        <div className="absolute right-0 top-0 h-full w-32">
           <svg className="h-full w-full" viewBox="0 0 128 900" fill="none">
             <path d="M128,0 L128,900 L64,900 Q0,450 64,0 L128,0 Z" fill="rgba(156,163,175,0.15)" />
             <path d="M128,0 L128,900 L80,900 Q32,450 80,0 L128,0 Z" fill="rgba(156,163,175,0.25)" />
@@ -35,9 +33,10 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 w-full px-6 py-4">
-        <nav className="max-w-7xl mx-auto flex items-center justify-between">
+      {/* Centered Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen w-full px-4">
+        {/* Header */}
+        <header className="w-full max-w-7xl flex items-center justify-between py-4">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <div className="w-4 h-4 bg-white rounded-sm"></div>
@@ -56,12 +55,10 @@ const LandingPage: React.FC = () => {
           >
             Sign up
           </button>
-        </nav>
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <main className="relative z-10 w-full flex flex-col items-center justify-center min-h-screen">
-        <div className="max-w-4xl w-full mx-auto text-center px-4">
+        {/* Main Content */}
+        <main className="flex flex-col items-center justify-center flex-grow w-full max-w-4xl text-center mt-8">
           {/* Hero Text */}
           <div className={`mb-16 transition-all duration-1000 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">Track. Analyze. Improve.</h1>
@@ -75,6 +72,7 @@ const LandingPage: React.FC = () => {
               ))}
             </div>
           </div>
+
           {/* Cards */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
             {/* Track Card */}
@@ -119,7 +117,6 @@ const LandingPage: React.FC = () => {
                     <span className="text-white font-bold text-lg">N</span>
                   </div>
                 </div>
-                {/* App Store Button */}
                 <button className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-full text-sm">
                   📱 Download on the App Store
                 </button>
@@ -150,10 +147,10 @@ const LandingPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
   );
 };
 
-export default LandingPage; 
+export default LandingPage;
