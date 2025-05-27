@@ -35,29 +35,30 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Header */}
-      <header className="relative z-10 w-full px-4 py-4">
-        <nav className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-              <div className="w-4 h-4 bg-white rounded-sm"></div>
-            </div>
-            <span className="text-xl font-semibold text-gray-900">macro tracker</span>
-          </div>
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">About</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Pricing</a>
-            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
-          </div>
-          <button
-            onClick={() => navigate("/signup")}
-            className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
-          >
-            Sign up
-          </button>
-        </nav>
-      </header>
+{/* Header */}
+<header className="relative z-10 w-full px-4 py-4">
+  <nav className="max-w-4xl mx-auto flex items-center justify-center space-x-8">
+    <div className="flex items-center space-x-2">
+      <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+        <div className="w-4 h-4 bg-white rounded-sm"></div>
+      </div>
+      <span className="text-xl font-semibold text-gray-900">macro tracker</span>
+    </div>
+    <div className="hidden md:flex items-center space-x-8">
+      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">About</a>
+      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
+      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Pricing</a>
+      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
+    </div>
+    <button
+      onClick={() => navigate("/signup")}
+      className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
+    >
+      Sign up
+    </button>
+  </nav>
+</header>
+
 
       {/* Main Content */}
       <main className="relative z-10 w-full flex flex-col items-center justify-center min-h-screen">
