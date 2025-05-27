@@ -26,6 +26,15 @@ export default function LandingPage() {
 
   return (
     <div className="relative min-h-screen bg-white overflow-hidden flex flex-col items-center justify-center">
+      {/* Top-right Log In button */}
+      <div className="w-full flex justify-end pr-[25%] pt-6">
+        <button
+          onClick={handleLogin}
+          className="px-8 py-3 bg-blue-600 text-white rounded-lg shadow transition duration-300 hover:bg-blue-700"
+        >
+          Log In
+        </button>
+      </div>
       {/* Side Bars */}
       <div className={`absolute left-0 bottom-0 w-32 h-3/4 bg-gray-200 rounded-t-3xl transition-all duration-700 ${showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}></div>
       <div className={`absolute right-0 bottom-0 w-32 h-3/4 bg-gray-200 rounded-t-3xl transition-all duration-700 ${showBars ? 'translate-y-0 opacity-100' : 'translate-y-full opacity-0'}`}></div>
@@ -76,7 +85,6 @@ export default function LandingPage() {
                 <span className="w-8 h-8 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold">A</span>
                 <span className="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold">N</span>
               </div>
-              <button className="mt-4 px-4 py-2 bg-gray-900 text-white rounded shadow">Download on the App Store</button>
             </div>
           </div>
           {/* Right Card */}
@@ -92,13 +100,6 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-        {/* Login Button */}
-        <button
-          onClick={handleLogin}
-          className="mt-12 px-8 py-3 bg-blue-600 text-white rounded-lg shadow transition duration-300 hover:bg-blue-700"
-        >
-          Log In
-        </button>
       </div>
       {/* Fade overlay for login */}
       {showLoginFade && (
