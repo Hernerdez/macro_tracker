@@ -5,10 +5,10 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
   const [showContent, setShowContent] = useState<boolean>(false);
   const [showCards, setShowCards] = useState<boolean[]>([false, false, false]);
-  const [showSidebars, setShowSidebars] = useState<boolean>(false);
+//  const [showSidebars, setShowSidebars] = useState<boolean>(false);
 
   useEffect(() => {
-    setTimeout(() => setShowSidebars(true), 100);
+   // setTimeout(() => setShowSidebars(true), 100);
     setTimeout(() => setShowContent(true), 600);
     setTimeout(() => setShowCards([false, true, false]), 1100);
     setTimeout(() => setShowCards([true, true, false]), 1400);
