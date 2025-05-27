@@ -36,8 +36,8 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Header */}
-      <header className="relative z-10 w-full px-6 py-4">
-        <nav className="max-w-7xl mx-auto flex items-center justify-between">
+      <header className="relative z-10 w-full px-4 py-4">
+        <nav className="max-w-4xl mx-auto flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <div className="w-4 h-4 bg-white rounded-sm"></div>
