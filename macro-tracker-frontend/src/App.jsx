@@ -1,5 +1,5 @@
 // src/App.jsx
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Signup from './Signup';
 import Login from './Login';
 import Dashboard from './Dashboard';
@@ -9,9 +9,12 @@ import FoodSearch from './FoodSearch';
 import LandingPage from './LandingPage'; // make sure it's correctly imported!
 
 function App() {
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
+
   return (
     <>
-      <Navbar />
+      {!isLandingPage && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} /> {/* This should be your home route */}
         <Route path="/signup" element={<Signup />} />
