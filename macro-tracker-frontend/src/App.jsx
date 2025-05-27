@@ -6,14 +6,14 @@ import Dashboard from './Dashboard';
 import ProtectedRoute from './ProtectedRoute';
 import Navbar from './Navbar';
 import FoodSearch from './FoodSearch';
-import LandingPage from './LandingPage';
+import LandingPage from './LandingPage'; // make sure it’s correctly imported!
 
 function App() {
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} /> {/* swapped! */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route

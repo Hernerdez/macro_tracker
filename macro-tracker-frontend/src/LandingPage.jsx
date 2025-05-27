@@ -2,11 +2,11 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
-function LandingPage() {
+export default function LandingPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Trigger any animations after mount
+    // Trigger any fade-in or load-in animations
   }, []);
 
   return (
@@ -20,13 +20,13 @@ function LandingPage() {
       <div className="flex space-x-4">
         <button
           onClick={() => navigate('/signup')}
-          className="px-6 py-3 rounded bg-primary text-white shadow hover:bg-primary-dark transition"
+          className="px-6 py-3 rounded bg-blue-600 text-white shadow hover:bg-blue-700 transition"
         >
           Sign Up
         </button>
         <button
           onClick={() => navigate('/login')}
-          className="px-6 py-3 rounded border border-primary text-primary hover:bg-primary hover:text-white transition"
+          className="px-6 py-3 rounded border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition"
         >
           Log In
         </button>
@@ -34,5 +34,3 @@ function LandingPage() {
     </div>
   );
 }
-
-export default LandingPage;
