@@ -1,12 +1,15 @@
-// src/LandingPage.jsx
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-export default function LandingPage() {
+interface CardState {
+  [key: number]: boolean;
+}
+
+const LandingPage: React.FC = () => {
   const navigate = useNavigate();
-  const [showContent, setShowContent] = useState(false);
-  const [showCards, setShowCards] = useState([false, false, false]);
-  const [showSidebars, setShowSidebars] = useState(false);
+  const [showContent, setShowContent] = useState<boolean>(false);
+  const [showCards, setShowCards] = useState<boolean[]>([false, false, false]);
+  const [showSidebars, setShowSidebars] = useState<boolean>(false);
 
   useEffect(() => {
     setTimeout(() => setShowSidebars(true), 100);
@@ -155,4 +158,6 @@ export default function LandingPage() {
       </main>
     </div>
   );
-}
+};
+
+export default LandingPage; 

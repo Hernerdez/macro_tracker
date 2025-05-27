@@ -12,11 +12,6 @@
   .animate-fade-in {
     animation: fade-in 1s ease-out forwards;
   }
-
-  /* 🏠 Sidebar transition utility */
-  .sidebar-transition {
-    transition: transform 0.7s ease-out, box-shadow 0.3s;
-  }
 }
 
 /* 🌱 Base styles */

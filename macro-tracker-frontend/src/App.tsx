@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import Signup from './Signup';
 import Login from './Login';
 import Dashboard from './Dashboard';
@@ -7,10 +7,13 @@ import Navbar from './Navbar';
 import FoodSearch from './FoodSearch';
 import LandingPage from './LandingPage';
 
-function App() {
+const App: React.FC = () => {
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
+
   return (
     <>
-      <Navbar />
+      {!isLandingPage && <Navbar />}
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
@@ -34,6 +37,6 @@ function App() {
       </Routes>
     </>
   );
-}
+};
 
-export default App;
+export default App; 

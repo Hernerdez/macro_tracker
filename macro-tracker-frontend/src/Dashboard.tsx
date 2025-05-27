@@ -2,11 +2,31 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-export default function Dashboard() {
+interface Food {
+  id: number;
+  name: string;
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+  serving_size?: number;
+  serving_unit?: string;
+  servings?: number;
+  time_logged?: string;
+}
+
+interface Meal {
+  id: number;
+  meal_name: string;
+  date: string;
+  foods: Food[];
+}
+
+const Dashboard: React.FC = () => {
   const navigate = useNavigate();
-  const [meals, setMeals] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(() => {
+  const [meals, setMeals] = useState<Meal[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
     const today = new Date();
     const yyyy = today.getFullYear();
     const mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -14,7 +34,7 @@ export default function Dashboard() {
     return `${yyyy}-${mm}-${dd}`;
   });
 
-  const handleLogout = () => {
+  const handleLogout = (): void => {
     localStorage.removeItem('token');
     navigate('/login');
   };
@@ -37,7 +57,7 @@ export default function Dashboard() {
       },
     })
       .then(res => {
-        const mealsForDate = (res.data || []).filter(meal => meal.date === selectedDate);
+        const mealsForDate: Meal[] = (res.data || []).filter((meal: Meal) => meal.date === selectedDate);
         const MEAL_ORDER = ['Breakfast', 'Lunch', 'Dinner', 'Sweet Treats'];
         mealsForDate.sort((a, b) => MEAL_ORDER.indexOf(a.meal_name) - MEAL_ORDER.indexOf(b.meal_name));
         setMeals(mealsForDate);
@@ -108,4 +128,6 @@ export default function Dashboard() {
       )}
     </div>
   );
-}
+};
+
+export default Dashboard; 
