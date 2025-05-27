@@ -25,7 +25,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-white flex items-center justify-center overflow-x-hidden">
+    <div className="relative min-h-screen bg-white flex items-center justify-center">
       {/* Log In button pinned to top right */}
       <div className="fixed top-4 right-8 z-50">
         <button
@@ -36,8 +36,15 @@ export default function LandingPage() {
         </button>
       </div>
       {/* Side Bars */}
-      <div className="absolute left-0 bottom-0 w-32 h-screen bg-gray-400 rounded-t-3xl z-20 translate-y-0 opacity-100"></div>
-      <div className="absolute right-0 bottom-0 w-32 h-screen bg-gray-400 rounded-t-3xl z-20 translate-y-0 opacity-100"></div>
+      <div style={{
+        position: 'absolute',
+        left: 0,
+        bottom: 0,
+        width: '100px',
+        height: '100vh',
+        background: 'red',
+        zIndex: 9999
+      }}></div>
       
       {/* Main Content */}
       <div className="relative z-10 flex flex-col items-center">
