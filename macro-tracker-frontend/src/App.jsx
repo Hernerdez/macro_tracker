@@ -6,14 +6,14 @@ import Dashboard from './Dashboard';
 import ProtectedRoute from './ProtectedRoute';
 import Navbar from './Navbar';
 import FoodSearch from './FoodSearch';
-
+import LandingPage from './LandingPage';
 
 function App() {
   return (
     <>
       <Navbar />
       <Routes>
-        <Route path="/" element={<h1>Welcome to Macro Tracker</h1>} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route
