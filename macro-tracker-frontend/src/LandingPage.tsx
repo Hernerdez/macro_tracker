@@ -1,22 +1,24 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+"use client"
+
+import type React from "react"
+
+import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
 
 const LandingPage: React.FC = () => {
-  const navigate = useNavigate();
-  const [showContent, setShowContent] = useState<boolean>(false);
-  const [showCards, setShowCards] = useState<boolean[]>([false, false, false]);
-//  const [showSidebars, setShowSidebars] = useState<boolean>(false);
+  const navigate = useNavigate()
+  const [showContent, setShowContent] = useState<boolean>(false)
+  const [showCards, setShowCards] = useState<boolean[]>([false, false, false])
 
   useEffect(() => {
-   // setTimeout(() => setShowSidebars(true), 100);
-    setTimeout(() => setShowContent(true), 600);
-    setTimeout(() => setShowCards([false, true, false]), 1100);
-    setTimeout(() => setShowCards([true, true, false]), 1400);
-    setTimeout(() => setShowCards([true, true, true]), 1700);
-  }, []);
+    setTimeout(() => setShowContent(true), 600)
+    setTimeout(() => setShowCards([false, true, false]), 1100)
+    setTimeout(() => setShowCards([true, true, false]), 1400)
+    setTimeout(() => setShowCards([true, true, true]), 1700)
+  }, [])
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
       {/* Curved Side Bars */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Left curved sidebar */}
@@ -35,39 +37,51 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
-{/* Header */}
-<header className="relative z-10 w-full px-4 py-4">
-  <nav className="max-w-4xl mx-auto flex items-center justify-center space-x-8">
-    <div className="flex items-center space-x-2">
-      <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-        <div className="w-4 h-4 bg-white rounded-sm"></div>
-      </div>
-      <span className="text-xl font-semibold text-gray-900">macro tracker</span>
-    </div>
-    <div className="hidden md:flex items-center space-x-8">
-      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">About</a>
-      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Features</a>
-      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Pricing</a>
-      <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">Blog</a>
-    </div>
-    <button
-      onClick={() => navigate("/signup")}
-      className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
-    >
-      Sign up
-    </button>
-  </nav>
-</header>
+      {/* Header - Positioned absolutely to not affect layout */}
+      <header className="absolute top-0 left-0 right-0 z-10 w-full px-4 py-4">
+        <nav className="max-w-4xl mx-auto flex items-center justify-center space-x-8">
+          <div className="flex items-center space-x-2">
+            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+              <div className="w-4 h-4 bg-white rounded-sm"></div>
+            </div>
+            <span className="text-xl font-semibold text-gray-900">macro tracker</span>
+          </div>
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
+              About
+            </a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
+              Features
+            </a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
+              Pricing
+            </a>
+            <a href="#" className="text-gray-600 hover:text-gray-900 transition-colors">
+              Blog
+            </a>
+          </div>
+          <button
+            onClick={() => navigate("/signup")}
+            className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50"
+          >
+            Sign up
+          </button>
+        </nav>
+      </header>
 
-
-      {/* Main Content */}
-      <main className="relative z-10 w-full flex flex-col items-center justify-center min-h-screen">
+      {/* Main Content - Now perfectly centered */}
+      <main className="relative z-10 min-h-screen flex items-center justify-center">
         <div className="max-w-4xl w-full mx-auto text-center px-4">
           {/* Hero Text */}
-          <div className={`mb-16 transition-all duration-1000 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">Track. Analyze. Improve.</h1>
+          <div
+            className={`mb-16 transition-all duration-1000 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+          >
+            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+              Track. Analyze. Improve.
+            </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
-              Take control of your nutrition journey with Macro Tracker. Log meals, track macros, and achieve your health goals.
+              Take control of your nutrition journey with Macro Tracker. Log meals, track macros, and achieve your
+              health goals.
             </p>
             {/* Indicator dots */}
             <div className="flex justify-center space-x-2 mb-12">
@@ -76,12 +90,15 @@ const LandingPage: React.FC = () => {
               ))}
             </div>
           </div>
+
           {/* Cards */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
             {/* Track Card */}
-            <div className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
+            <div
+              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
                 showCards[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}>
+              }`}
+            >
               <div className="h-full flex flex-col justify-center items-center text-center">
                 <p className="text-gray-500 text-sm mb-4">Track your meals</p>
                 <div className="text-5xl font-bold text-gray-900 mb-6">2,500</div>
@@ -95,10 +112,13 @@ const LandingPage: React.FC = () => {
                 </p>
               </div>
             </div>
+
             {/* Connect Sources Card */}
-            <div className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-1 hover:scale-105 ${
+            <div
+              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-1 hover:scale-105 ${
                 showCards[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}>
+              }`}
+            >
               <div className="h-full flex flex-col justify-center items-center text-center">
                 <h3 className="text-xl font-semibold text-gray-900 mb-8">Connect sources</h3>
                 {/* Toggle Switch */}
@@ -126,10 +146,13 @@ const LandingPage: React.FC = () => {
                 </button>
               </div>
             </div>
+
             {/* Learn More Card */}
-            <div className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-2 hover:scale-105 ${
+            <div
+              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-2 hover:scale-105 ${
                 showCards[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}>
+              }`}
+            >
               <div className="h-full flex flex-col justify-center items-center text-center">
                 <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
                   <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
@@ -154,7 +177,7 @@ const LandingPage: React.FC = () => {
         </div>
       </main>
     </div>
-  );
-};
+  )
+}
 
-export default LandingPage; 
+export default LandingPage
