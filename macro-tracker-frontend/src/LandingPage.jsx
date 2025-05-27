@@ -26,8 +26,8 @@ export default function LandingPage() {
 
   return (
     <div className="relative min-h-screen bg-white overflow-hidden flex flex-col items-center justify-center">
-      {/* Top-right Log In button */}
-      <div className="w-full flex justify-end pr-[25%] pt-6">
+      {/* Log In button pinned to top right */}
+      <div className="fixed top-4 right-8 z-50">
         <button
           onClick={handleLogin}
           className="px-8 py-3 bg-blue-600 text-white rounded-lg shadow transition duration-300 hover:bg-blue-700"
