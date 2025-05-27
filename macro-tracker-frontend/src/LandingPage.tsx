@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
@@ -37,7 +36,7 @@ const LandingPage: React.FC = () => {
         </div>
       </div>
 
-      {/* Header - Positioned absolutely to not affect layout */}
+      {/* Header */}
       <header className="absolute top-0 left-0 right-0 z-10 w-full px-4 py-4">
         <nav className="max-w-4xl mx-auto flex items-center justify-center space-x-8">
           <div className="flex items-center space-x-2">
@@ -69,12 +68,14 @@ const LandingPage: React.FC = () => {
         </nav>
       </header>
 
-      {/* Main Content - Now perfectly centered */}
-      <main className="relative z-10 min-h-screen flex items-center justify-center">
+      {/* Main Content - Centered */}
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center min-h-screen">
         <div className="max-w-4xl w-full mx-auto text-center px-4">
           {/* Hero Text */}
           <div
-            className={`mb-16 transition-all duration-1000 ${showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`mb-16 transition-all duration-1000 ${
+              showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
           >
             <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
               Track. Analyze. Improve.
@@ -95,7 +96,7 @@ const LandingPage: React.FC = () => {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
             {/* Track Card */}
             <div
-              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
+              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
                 showCards[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
@@ -115,17 +116,15 @@ const LandingPage: React.FC = () => {
 
             {/* Connect Sources Card */}
             <div
-              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-1 hover:scale-105 ${
+              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-1 hover:scale-105 ${
                 showCards[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
               <div className="h-full flex flex-col justify-center items-center text-center">
                 <h3 className="text-xl font-semibold text-gray-900 mb-8">Connect sources</h3>
-                {/* Toggle Switch */}
                 <div className="w-16 h-8 bg-gray-900 rounded-full mb-8 relative">
                   <div className="w-6 h-6 bg-white rounded-full absolute top-1 right-1 transition-transform"></div>
                 </div>
-                {/* App Icons */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
                     <span className="text-white font-bold text-sm">MT</span>
@@ -140,7 +139,6 @@ const LandingPage: React.FC = () => {
                     <span className="text-white font-bold text-lg">N</span>
                   </div>
                 </div>
-                {/* App Store Button */}
                 <button className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-full text-sm">
                   📱 Download on the App Store
                 </button>
@@ -149,7 +147,7 @@ const LandingPage: React.FC = () => {
 
             {/* Learn More Card */}
             <div
-              className={`w-80 h-80 p-8 bg-white shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-2 hover:scale-105 ${
+              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-2 hover:scale-105 ${
                 showCards[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
             >
