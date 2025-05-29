@@ -3,82 +3,23 @@
 import type React from "react"
 
 import { useNavigate } from "react-router-dom"
-import { useEffect, useState, Suspense } from "react"
-import ErrorBoundary from "./components/error-boundary"
-import { LoadingFallback, CardLoadingSkeleton } from "./components/loading-fallback"
+import { useEffect, useState } from "react"
 
-function LandingPageContent() {
+const LandingPage: React.FC = () => {
   const navigate = useNavigate()
   const [showContent, setShowContent] = useState<boolean>(false)
   const [showCards, setShowCards] = useState<boolean[]>([false, false, false])
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [navigationError, setNavigationError] = useState<string | null>(null)
 
   useEffect(() => {
-    try {
-      const timeouts: ReturnType<typeof setTimeout>[] = []
-
-      // Simulate initial loading
-      timeouts.push(setTimeout(() => setIsLoading(false), 300))
-      timeouts.push(setTimeout(() => setShowContent(true), 600))
-      timeouts.push(setTimeout(() => setShowCards([false, true, false]), 1100))
-      timeouts.push(setTimeout(() => setShowCards([true, true, false]), 1400))
-      timeouts.push(setTimeout(() => setShowCards([true, true, true]), 1700))
-
-      // Cleanup function
-      return () => {
-        timeouts.forEach((timeout) => clearTimeout(timeout))
-      }
-    } catch (error) {
-      console.error("Error in useEffect:", error)
-      setIsLoading(false)
-    }
+    // Simple timeouts without complex error handling
+    setTimeout(() => setShowContent(true), 600)
+    setTimeout(() => setShowCards([false, true, false]), 1100)
+    setTimeout(() => setShowCards([true, true, false]), 1400)
+    setTimeout(() => setShowCards([true, true, true]), 1700)
   }, [])
-
-  const handleNavigation = (path: string) => {
-    try {
-      setNavigationError(null)
-      navigate(path)
-    } catch (error) {
-      console.error("Navigation error:", error)
-      setNavigationError("Failed to navigate. Please try again.")
-
-      // Fallback navigation
-      setTimeout(() => {
-        try {
-          window.location.href = path
-        } catch (fallbackError) {
-          console.error("Fallback navigation failed:", fallbackError)
-        }
-      }, 1000)
-    }
-  }
-
-  if (isLoading) {
-    return <LoadingFallback />
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden relative">
-      {/* Navigation Error Toast */}
-      {navigationError && (
-        <div className="fixed top-4 right-4 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded shadow-lg">
-          <div className="flex items-center">
-            <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-              <path
-                fillRule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
-                clipRule="evenodd"
-              />
-            </svg>
-            <span className="text-sm">{navigationError}</span>
-            <button onClick={() => setNavigationError(null)} className="ml-2 text-red-500 hover:text-red-700">
-              ×
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Curved Side Bars */}
       <div className="fixed inset-0 pointer-events-none z-0">
         {/* Left curved sidebar */}
@@ -110,37 +51,36 @@ function LandingPageContent() {
             <button
               type="button"
               className="text-gray-600 hover:text-gray-900 transition-colors"
-              onClick={() => handleNavigation("/about")}
+              onClick={() => navigate("/about")}
             >
               About
             </button>
             <button
               type="button"
               className="text-gray-600 hover:text-gray-900 transition-colors"
-              onClick={() => handleNavigation("/features")}
+              onClick={() => navigate("/features")}
             >
               Features
             </button>
             <button
               type="button"
               className="text-gray-600 hover:text-gray-900 transition-colors"
-              onClick={() => handleNavigation("/pricing")}
+              onClick={() => navigate("/pricing")}
             >
               Pricing
             </button>
             <button
               type="button"
               className="text-gray-600 hover:text-gray-900 transition-colors"
-              onClick={() => handleNavigation("/blog")}
+              onClick={() => navigate("/blog")}
             >
               Blog
             </button>
           </div>
           <button
             type="button"
-            onClick={() => handleNavigation("/signup")}
+            onClick={() => navigate("/signup")}
             className="border border-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-50 transition-colors"
-            disabled={!!navigationError}
           >
             Sign up
           </button>
@@ -173,106 +113,90 @@ function LandingPageContent() {
 
           {/* Cards */}
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
-            <Suspense fallback={<CardLoadingSkeleton />}>
-              {/* Track Card */}
-              <div
-                className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
-                  showCards[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <div className="h-full flex flex-col justify-center items-center text-center">
-                  <p className="text-gray-500 text-sm mb-4">Track your meals</p>
-                  <div className="text-5xl font-bold text-gray-900 mb-6">2,500</div>
-                  <div className="w-full h-16 mb-4">
-                    <svg viewBox="0 0 200 60" className="w-full h-full">
-                      <path d="M10,40 Q50,20 100,30 T190,25" stroke="#e5e7eb" strokeWidth="2" fill="none" />
-                    </svg>
-                  </div>
-                  <p className="text-xs text-gray-400">
-                    Daily calorie goal: <span className="font-medium">2,500 kcal</span>
-                  </p>
+            {/* Track Card */}
+            <div
+              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:-rotate-2 hover:scale-105 ${
+                showCards[0] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+            >
+              <div className="h-full flex flex-col justify-center items-center text-center">
+                <p className="text-gray-500 text-sm mb-4">Track your meals</p>
+                <div className="text-5xl font-bold text-gray-900 mb-6">2,500</div>
+                <div className="w-full h-16 mb-4">
+                  <svg viewBox="0 0 200 60" className="w-full h-full">
+                    <path d="M10,40 Q50,20 100,30 T190,25" stroke="#e5e7eb" strokeWidth="2" fill="none" />
+                  </svg>
                 </div>
+                <p className="text-xs text-gray-400">
+                  Daily calorie goal: <span className="font-medium">2,500 kcal</span>
+                </p>
               </div>
-            </Suspense>
+            </div>
 
-            <Suspense fallback={<CardLoadingSkeleton />}>
-              {/* Connect Sources Card */}
-              <div
-                className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-1 hover:scale-105 ${
-                  showCards[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <div className="h-full flex flex-col justify-center items-center text-center">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-8">Connect sources</h3>
-                  <div className="w-16 h-8 bg-gray-900 rounded-full mb-8 relative">
-                    <div className="w-6 h-6 bg-white rounded-full absolute top-1 right-1 transition-transform"></div>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">MT</span>
-                    </div>
-                    <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">F</span>
-                    </div>
-                    <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
-                      <div className="w-6 h-6 bg-white rounded-full"></div>
-                    </div>
-                    <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
-                      <span className="text-white font-bold text-lg">N</span>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-full text-sm transition-colors"
-                  >
-                    📱 Download on the App Store
-                  </button>
+            {/* Connect Sources Card */}
+            <div
+              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-1 hover:scale-105 ${
+                showCards[1] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+            >
+              <div className="h-full flex flex-col justify-center items-center text-center">
+                <h3 className="text-xl font-semibold text-gray-900 mb-8">Connect sources</h3>
+                <div className="w-16 h-8 bg-gray-900 rounded-full mb-8 relative">
+                  <div className="w-6 h-6 bg-white rounded-full absolute top-1 right-1 transition-transform"></div>
                 </div>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">MT</span>
+                  </div>
+                  <div className="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">F</span>
+                  </div>
+                  <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center">
+                    <div className="w-6 h-6 bg-white rounded-full"></div>
+                  </div>
+                  <div className="w-12 h-12 bg-red-600 rounded-xl flex items-center justify-center">
+                    <span className="text-white font-bold text-lg">N</span>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  className="bg-gray-800 hover:bg-gray-900 text-white px-6 py-2 rounded-full text-sm transition-colors"
+                >
+                  📱 Download on the App Store
+                </button>
               </div>
-            </Suspense>
+            </div>
 
-            <Suspense fallback={<CardLoadingSkeleton />}>
-              {/* Learn More Card */}
-              <div
-                className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-2 hover:scale-105 ${
-                  showCards[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-              >
-                <div className="h-full flex flex-col justify-center items-center text-center">
-                  <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
-                    <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+            {/* Learn More Card */}
+            <div
+              className={`w-80 h-80 p-8 bg-white rounded-2xl shadow-lg transition-all duration-700 hover:shadow-xl hover:rotate-2 hover:scale-105 ${
+                showCards[2] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
+            >
+              <div className="h-full flex flex-col justify-center items-center text-center">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-6">
+                  <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
+                </div>
+                <div className="space-y-4 mb-6">
+                  <div className="text-sm text-gray-600">{"What's my protein intake?"}</div>
+                  <div className="text-sm text-gray-600">Am I meeting my macro goals?</div>
+                  <div className="text-sm text-gray-600">How can I improve my diet?</div>
+                </div>
+                <div className="flex items-center justify-between w-full">
+                  <div>
+                    <p className="text-lg font-semibold text-gray-900">Learn more from your data</p>
+                    <p className="text-sm text-gray-600">and make better decisions</p>
                   </div>
-                  <div className="space-y-4 mb-6">
-                    <div className="text-sm text-gray-600">{"What's my protein intake?"}</div>
-                    <div className="text-sm text-gray-600">Am I meeting my macro goals?</div>
-                    <div className="text-sm text-gray-600">How can I improve my diet?</div>
-                  </div>
-                  <div className="flex items-center justify-between w-full">
-                    <div>
-                      <p className="text-lg font-semibold text-gray-900">Learn more from your data</p>
-                      <p className="text-sm text-gray-600">and make better decisions</p>
-                    </div>
-                    <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
-                      <span className="text-gray-600">→</span>
-                    </div>
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                    <span className="text-gray-600">→</span>
                   </div>
                 </div>
               </div>
-            </Suspense>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  )
-}
-
-const LandingPage: React.FC = () => {
-  return (
-    <ErrorBoundary>
-      <Suspense fallback={<LoadingFallback />}>
-        <LandingPageContent />
-      </Suspense>
-    </ErrorBoundary>
   )
 }
 
