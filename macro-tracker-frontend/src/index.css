@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+ /* font-size: */
+}
 /* 🔥 Custom fade-in animation */
 @keyframes fade-in {
   0% {

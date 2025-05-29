@@ -24,13 +24,12 @@ const LandingPage: React.FC = () => {
     <div
       style={{
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%)",
-        position: "relative",
-        width: "100%",
-        overflow: "hidden",
+        width: "100vw",
         display: "flex",
-        flexDirection: "column",
+        justifyContent: "center",
         alignItems: "center",
+        background: "linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%)",
+        overflow: "hidden",
       }}
     >
       {/* Curved Side Bars */}
@@ -54,10 +53,12 @@ const LandingPage: React.FC = () => {
       {/* Main Container - This ensures everything is centered */}
       <div
         style={{
-          width: "100%",
           maxWidth: "1200px",
+          width: "100%",
           margin: "0 auto",
           padding: "0 16px",
+          paddingLeft: "100px",
+          paddingRight: "100px",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
