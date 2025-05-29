@@ -3,7 +3,6 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import Signup from './Signup'
 import axios from 'axios'
 
 const LandingPage: React.FC = () => {
