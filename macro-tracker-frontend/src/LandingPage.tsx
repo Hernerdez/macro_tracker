@@ -8,6 +8,7 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate()
   const [showContent, setShowContent] = useState<boolean>(false)
   const [showCards, setShowCards] = useState<boolean[]>([false, false, false])
+  const [sidebarsVisible, setSidebarsVisible] = useState(false)
 
   useEffect(() => {
     console.log("Landing page mounted!")
@@ -18,6 +19,7 @@ const LandingPage: React.FC = () => {
     setTimeout(() => setShowCards([false, true, false]), 1100)
     setTimeout(() => setShowCards([true, true, false]), 1400)
     setTimeout(() => setShowCards([true, true, true]), 1700)
+    setTimeout(() => setSidebarsVisible(true), 100)
   }, [])
 
   return (
@@ -30,26 +32,85 @@ const LandingPage: React.FC = () => {
         alignItems: "center",
         background: "linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%)",
         overflow: "hidden",
+        fontFamily: "Inter, sans-serif",
       }}
     >
-      {/* Curved Side Bars */}
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", zIndex: 1 }}>
-        {/* Left curved sidebar */}
-        <div style={{ position: "absolute", left: 0, top: 0, height: "100vh", width: "128px" }}>
-          <svg style={{ height: "100%", width: "100%" }} viewBox="0 0 128 900" fill="none">
-            <path d="M0,0 L0,900 L64,900 Q128,450 64,0 L0,0 Z" fill="rgba(156,163,175,0.15)" />
-            <path d="M0,0 L0,900 L48,900 Q96,450 48,0 L0,0 Z" fill="rgba(156,163,175,0.25)" />
-          </svg>
-        </div>
-        {/* Right curved sidebar */}
-        <div style={{ position: "absolute", right: 0, top: 0, height: "100vh", width: "128px" }}>
-          <svg style={{ height: "100%", width: "100%" }} viewBox="0 0 128 900" fill="none">
-            <path d="M128,0 L128,900 L64,900 Q0,450 64,0 L128,0 Z" fill="rgba(156,163,175,0.15)" />
-            <path d="M128,0 L128,900 L80,900 Q32,450 80,0 L128,0 Z" fill="rgba(156,163,175,0.25)" />
-          </svg>
-        </div>
-      </div>
+ {/* Curved Side Bars */}
+<div
+  style={{
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    pointerEvents: "none",
+    zIndex: 1,
+  }}
+>
+  {/* Left curved sidebar */}
+  <div
+    style={{
+      position: "absolute",
+      left: 0,
+      top: 0,
+      height: "100vh",
+      width: "128px",
+      transform: sidebarsVisible ? "translateY(0)" : "translateY(100%)",
+      transition: "transform 1.4s cubic-bezier(0.4,0,0.2,1)",
+    }}
+  >
+    <svg style={{ height: "100%", width: "100%" }} viewBox="0 0 128 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="
+          M0,0
+          L0,900
+          Q64,450 128,900
+          L128,0
+          Z
+        "
+        fill="url(#leftGradient)"
+      />
+      <defs>
+        <linearGradient id="leftGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="rgba(156,163,175,0.15)" />
+          <stop offset="100%" stopColor="rgba(156,163,175,0)" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
 
+  {/* Right curved sidebar */}
+  <div
+    style={{
+      position: "absolute",
+      right: 0,
+      top: 0,
+      height: "100vh",
+      width: "128px",
+      transform: sidebarsVisible ? "translateY(0)" : "translateY(100%)",
+      transition: "transform 1.4s cubic-bezier(0.4,0,0.2,1)",
+    }}
+  >
+    <svg style={{ height: "100%", width: "100%" }} viewBox="0 0 128 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="
+          M128,0
+          L128,900
+          Q64,450 0,900
+          L0,0
+          Z
+        "
+        fill="url(#rightGradient)"
+      />
+      <defs>
+        <linearGradient id="rightGradient" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="rgba(156,163,175,0.15)" />
+          <stop offset="100%" stopColor="rgba(156,163,175,0)" />
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+</div>
       {/* Main Container - This ensures everything is centered */}
       <div
         style={{
@@ -78,31 +139,39 @@ const LandingPage: React.FC = () => {
             marginBottom: "64px",
           }}
         >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <div style={{ flex: 1, display: "flex", justifyContent: "flex-start" }}>
             <div
-              style={{
-                width: "32px",
-                height: "32px",
-                backgroundColor: "black",
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+              style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}
+              onClick={() => navigate("/")}
+              tabIndex={0}
+              role="button"
+              aria-label="Go to home page"
+              onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') navigate('/') }}
             >
               <div
                 style={{
-                  width: "16px",
-                  height: "16px",
-                  backgroundColor: "white",
-                  borderRadius: "2px",
+                  width: "32px",
+                  height: "32px",
+                  backgroundColor: "black",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              ></div>
+              >
+                <div
+                  style={{
+                    width: "16px",
+                    height: "16px",
+                    backgroundColor: "white",
+                    borderRadius: "2px",
+                  }}
+                ></div>
+              </div>
+              <span style={{ fontSize: "20px", fontWeight: "600", color: "#111827" }}>macro tracker</span>
             </div>
-            <span style={{ fontSize: "20px", fontWeight: "600", color: "#111827" }}>macro tracker</span>
           </div>
-
-          <nav style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+          <nav style={{ flex: 1, display: "flex", justifyContent: "center", gap: "32px" }}>
             <button
               style={{
                 background: "none",
@@ -156,21 +225,22 @@ const LandingPage: React.FC = () => {
               Blog
             </button>
           </nav>
-
-          <button
-            onClick={() => navigate("/signup")}
-            style={{
-              border: "1px solid #d1d5db",
-              color: "#374151",
-              padding: "8px 16px",
-              borderRadius: "6px",
-              backgroundColor: "white",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            Sign up
-          </button>
+          <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
+            <button
+              onClick={() => navigate("/signup")}
+              style={{
+                border: "1px solid #d1d5db",
+                color: "#374151",
+                padding: "8px 16px",
+                borderRadius: "6px",
+                backgroundColor: "white",
+                cursor: "pointer",
+                fontSize: "16px",
+              }}
+            >
+              Sign up
+            </button>
+          </div>
         </header>
 
         {/* Hero Section */}
@@ -187,12 +257,13 @@ const LandingPage: React.FC = () => {
         >
           <h1
             style={{
-              fontSize: "clamp(2.5rem, 6vw, 5rem)",
+              fontSize: "70px",
               fontWeight: "bold",
               color: "#111827",
               marginBottom: "24px",
               lineHeight: 1.1,
               textAlign: "center",
+              whiteSpace: "nowrap",
             }}
           >
             Track. Analyze. Improve.
