@@ -35,8 +35,16 @@ const LandingPage: React.FC = () => {
     e.preventDefault()
     setLoginError('')
     try {
-      const response = await axios.post('https://macro-tracker-api.onrender.com/login/', loginForm)
-      localStorage.setItem('token', response.data.token)
+      const formData = new FormData()
+      formData.append('username', loginForm.email) // OAuth2 expects 'username' field
+      formData.append('password', loginForm.password)
+      
+      const response = await axios.post('https://macro-tracker-api.onrender.com/login/', formData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+      localStorage.setItem('token', response.data.access_token)
       setShowSignupModal(false)
       setModalMode('signup')
       setLoginForm({ email: '', password: '' })
