@@ -3,12 +3,18 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
+import Signup from './Signup'
+import axios from 'axios'
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate()
   const [showContent, setShowContent] = useState<boolean>(false)
   const [showCards, setShowCards] = useState<boolean[]>([false, false, false])
   const [sidebarsVisible, setSidebarsVisible] = useState(false)
+  const [showSignupModal, setShowSignupModal] = useState(false)
+  const [modalMode, setModalMode] = useState<'signup' | 'login'>('signup')
+  const [loginForm, setLoginForm] = useState({ email: '', password: '' })
+  const [loginError, setLoginError] = useState('')
 
   useEffect(() => {
     console.log("Landing page mounted!")
@@ -21,6 +27,25 @@ const LandingPage: React.FC = () => {
     setTimeout(() => setShowCards([true, true, true]), 1700)
     setTimeout(() => setSidebarsVisible(true), 100)
   }, [])
+
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value })
+  }
+
+  const handleLoginSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setLoginError('')
+    try {
+      const response = await axios.post('https://macro-tracker-api.onrender.com/login/', loginForm)
+      localStorage.setItem('token', response.data.token)
+      setShowSignupModal(false)
+      setModalMode('signup')
+      setLoginForm({ email: '', password: '' })
+      navigate('/dashboard')
+    } catch (err) {
+      setLoginError('Invalid email or password')
+    }
+  }
 
   return (
     <div
@@ -227,7 +252,7 @@ const LandingPage: React.FC = () => {
           </nav>
           <div style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}>
             <button
-              onClick={() => navigate("/signup")}
+              onClick={() => setShowSignupModal(true)}
               style={{
                 border: "1px solid #d1d5db",
                 color: "#374151",
@@ -576,6 +601,227 @@ const LandingPage: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* Signup/Login Modal */}
+      {showSignupModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            background: "rgba(0,0,0,0.4)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            paddingTop: "40px",
+            paddingBottom: "40px",
+          }}
+          onClick={() => { setShowSignupModal(false); setModalMode('signup'); }}
+        >
+          <div
+            style={{
+              background: "#f7fafc",
+              borderRadius: "32px",
+              padding: "40px 32px 24px 32px",
+              minWidth: "350px",
+              maxWidth: "90vw",
+              maxHeight: "90vh",
+              overflowY: "auto",
+              boxShadow: "0 10px 40px rgba(0,0,0,0.12)",
+              position: "relative",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
+              onClick={() => { setShowSignupModal(false); setModalMode('signup'); }}
+              style={{
+                position: "absolute",
+                top: "24px",
+                right: "24px",
+                background: "none",
+                border: "none",
+                fontSize: "24px",
+                cursor: "pointer",
+                color: "#a0aec0",
+              }}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            {/* Logo or icon */}
+            <div style={{ marginBottom: 16 }}>
+              <span style={{ fontSize: 32 }}>🔗</span>
+            </div>
+            <h2 style={{ fontWeight: 700, fontSize: 28, marginBottom: 24, textAlign: "center", color: "#2d3748" }}>
+              {modalMode === 'signup' ? 'Create your account' : 'Sign in to your account'}
+            </h2>
+            {modalMode === 'signup' ? (
+              <>
+                <button
+                  style={{
+                    width: "100%",
+                    background: "#475569",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "9999px",
+                    padding: "12px 0",
+                    fontSize: 16,
+                    fontWeight: 500,
+                    marginBottom: 24,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.04)",
+                    cursor: "pointer",
+                  }}
+                >
+                  <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" style={{ width: 20, height: 20 }} />
+                  Continue with Google
+                </button>
+                <div style={{ width: "100%", borderBottom: "1px solid #e2e8f0", margin: "16px 0" }}></div>
+                {/* Email signup form (not functional, just UI for now) */}
+                <form style={{ width: "100%" }}>
+                  <input
+                    type="email"
+                    placeholder="Your email"
+                    style={{
+                      width: "100%",
+                      padding: "12px 20px",
+                      marginBottom: 12,
+                      borderRadius: "9999px",
+                      border: "1px solid #e2e8f0",
+                      background: "white",
+                      fontSize: 16,
+                      outline: "none",
+                      marginTop: 0,
+                      color: "black",
+                    }}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Create a password"
+                    style={{
+                      width: "100%",
+                      padding: "12px 20px",
+                      marginBottom: 16,
+                      borderRadius: "9999px",
+                      border: "1px solid #e2e8f0",
+                      background: "white",
+                      fontSize: 16,
+                      outline: "none",
+                      color: "black",
+                    }}
+                  />
+                  <button
+                    type="submit"
+                    style={{
+                      width: "100%",
+                      background: "#e2e8f0",
+                      color: "#475569",
+                      border: "none",
+                      borderRadius: "9999px",
+                      padding: "12px 0",
+                      fontSize: 16,
+                      fontWeight: 500,
+                      marginBottom: 16,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Continue with email
+                  </button>
+                </form>
+                <div style={{ textAlign: "center", fontSize: 14, color: "#64748b", marginBottom: 8 }}>
+                  <a href="#" style={{ color: "#475569", textDecoration: "underline" }} onClick={e => { e.preventDefault(); setModalMode('login'); }}>
+                    Already have an account?
+                  </a>
+                </div>
+                <div style={{ textAlign: "center", fontSize: 12, color: "#a0aec0" }}>
+                  By signing up, you agree to the{" "}
+                  <a href="#" style={{ color: "#475569", textDecoration: "underline" }}>
+                    Terms of Service
+                  </a>{" "}
+                  and{" "}
+                  <a href="#" style={{ color: "#475569", textDecoration: "underline" }}>
+                    Privacy Policy
+                  </a>
+                  .
+                </div>
+              </>
+            ) : (
+              <>
+                <form style={{ width: "100%" }} onSubmit={handleLoginSubmit}>
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Your email"
+                    value={loginForm.email}
+                    onChange={handleLoginChange}
+                    style={{
+                      width: "100%",
+                      padding: "12px 20px",
+                      marginBottom: 12,
+                      borderRadius: "9999px",
+                      border: "1px solid #e2e8f0",
+                      background: "white",
+                      fontSize: 16,
+                      outline: "none",
+                      marginTop: 0,
+                      color: "black",
+                    }}
+                  />
+                  <input
+                    type="password"
+                    name="password"
+                    placeholder="Password"
+                    value={loginForm.password}
+                    onChange={handleLoginChange}
+                    style={{
+                      width: "100%",
+                      padding: "12px 20px",
+                      marginBottom: 16,
+                      borderRadius: "9999px",
+                      border: "1px solid #e2e8f0",
+                      background: "white",
+                      fontSize: 16,
+                      outline: "none",
+                      color: "black",
+                    }}
+                  />
+                  {loginError && <div style={{ color: "#dc2626", textAlign: "center", marginBottom: 8 }}>{loginError}</div>}
+                  <button
+                    type="submit"
+                    style={{
+                      width: "100%",
+                      background: "#e2e8f0",
+                      color: "#475569",
+                      border: "none",
+                      borderRadius: "9999px",
+                      padding: "12px 0",
+                      fontSize: 16,
+                      fontWeight: 500,
+                      marginBottom: 16,
+                      cursor: "pointer",
+                    }}
+                  >
+                    Sign in
+                  </button>
+                </form>
+                <div style={{ textAlign: "center", fontSize: 14, color: "#64748b", marginBottom: 8 }}>
+                  <a href="#" style={{ color: "#475569", textDecoration: "underline" }} onClick={e => { e.preventDefault(); setModalMode('signup'); }}>
+                    Don't have an account? Sign up
+                  </a>
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   )
 }
