@@ -70,14 +70,14 @@ const LandingPage: React.FC = () => {
 
       {/* Main Content - Centered */}
       <main className="relative z-10 flex flex-1 flex-col items-center justify-center min-h-screen">
-        <div className="max-w-4xl w-full mx-auto text-center px-4">
+        <div className="w-full flex flex-col items-center text-center px-4">
           {/* Hero Text */}
           <div
             className={`mb-16 transition-all duration-1000 ${
               showContent ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight max-w-3xl mx-auto">
               Track. Analyze. Improve.
             </h1>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
