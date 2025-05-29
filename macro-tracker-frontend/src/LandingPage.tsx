@@ -179,6 +179,9 @@ const LandingPage: React.FC = () => {
             maxWidth: "800px",
             margin: "0 auto 80px auto",
             textAlign: "center",
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? "translateY(0)" : "translateY(32px)",
+            transition: "all 1s ease-out",
           }}
         >
           <h1
@@ -253,12 +256,16 @@ const LandingPage: React.FC = () => {
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-8px) rotate(-2deg) scale(1.05)"
-              e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+              if (showCards[0]) {
+                e.currentTarget.style.transform = "translateY(-8px) rotate(-2deg) scale(1.05)"
+                e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0) rotate(-2deg)"
-              e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+              if (showCards[0]) {
+                e.currentTarget.style.transform = "translateY(0) rotate(-2deg)"
+                e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+              }
             }}
           >
             <p style={{ color: "#6b7280", fontSize: "14px", marginBottom: "16px" }}>Track your meals</p>
@@ -293,12 +300,16 @@ const LandingPage: React.FC = () => {
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-8px) rotate(1deg) scale(1.05)"
-              e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+              if (showCards[1]) {
+                e.currentTarget.style.transform = "translateY(-8px) rotate(1deg) scale(1.05)"
+                e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0) rotate(1deg)"
-              e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+              if (showCards[1]) {
+                e.currentTarget.style.transform = "translateY(0) rotate(1deg)"
+                e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+              }
             }}
           >
             <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#111827", marginBottom: "32px" }}>
@@ -429,12 +440,16 @@ const LandingPage: React.FC = () => {
               cursor: "pointer",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-8px) rotate(2deg) scale(1.05)"
-              e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+              if (showCards[2]) {
+                e.currentTarget.style.transform = "translateY(-8px) rotate(2deg) scale(1.05)"
+                e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+              }
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0) rotate(2deg)"
-              e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+              if (showCards[2]) {
+                e.currentTarget.style.transform = "translateY(0) rotate(2deg)"
+                e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
+              }
             }}
           >
             <div
