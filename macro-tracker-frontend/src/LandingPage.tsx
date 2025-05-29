@@ -16,7 +16,7 @@ function LandingPageContent() {
 
   useEffect(() => {
     try {
-      const timeouts: NodeJS.Timeout[] = []
+      const timeouts: ReturnType<typeof setTimeout>[] = []
 
       // Simulate initial loading
       timeouts.push(setTimeout(() => setIsLoading(false), 300))
