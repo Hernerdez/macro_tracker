@@ -21,84 +21,35 @@ const LandingPage: React.FC = () => {
     setTimeout(() => setShowCards([true, true, true]), 1700)
   }, [])
 
-  const containerStyle: React.CSSProperties = {
-    minHeight: "100vh",
-    background: "linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%)",
-    overflow: "hidden",
-    position: "relative",
-  }
-
-  const headerStyle: React.CSSProperties = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 20,
-    width: "100%",
-    padding: "16px",
-    borderBottom: "1px solid #e5e7eb",
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
-  }
-
-  const navStyle: React.CSSProperties = {
-    maxWidth: "64rem",
-    margin: "0 auto",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "32px",
-  }
-
-  const mainContentStyle: React.CSSProperties = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    zIndex: 10,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: "128px",
-  }
-
-  const heroStyle: React.CSSProperties = {
-    opacity: showContent ? 1 : 0,
-    transform: showContent ? "translateY(0)" : "translateY(32px)",
-    transition: "all 1s ease-out",
-    marginBottom: "64px",
-    textAlign: "center" as const,
-  }
-
-  const titleStyle: React.CSSProperties = {
-    fontSize: "clamp(3rem, 8vw, 6rem)",
-    fontWeight: "bold",
-    color: "#111827",
-    marginBottom: "24px",
-    lineHeight: 1.1,
-    whiteSpace: "nowrap",
-  }
-
   return (
-    <div style={containerStyle}>
-      {/* Debug indicator */}
+    <div
+      style={{
+        minHeight: "100vh",
+        background: "linear-gradient(135deg, #f9fafb 0%, #e5e7eb 100%)",
+        position: "relative",
+        width: "100%",
+        overflow: "hidden",
+      }}
+    >
+      {/* Debug indicator - should be visible */}
       <div
         style={{
-          position: "absolute",
+          position: "fixed",
           top: "10px",
           left: "10px",
           background: "red",
           color: "white",
-          padding: "5px 10px",
+          padding: "10px",
           zIndex: 9999,
-          fontSize: "12px",
+          fontSize: "14px",
+          borderRadius: "4px",
         }}
       >
-        LANDING PAGE LOADED
+        CONTENT LOADED: {showContent ? "YES" : "NO"}
       </div>
 
       {/* Curved Side Bars */}
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", zIndex: 0 }}>
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", zIndex: 1 }}>
         {/* Left curved sidebar */}
         <div style={{ position: "absolute", left: 0, top: 0, height: "100vh", width: "128px" }}>
           <svg style={{ height: "100%", width: "100%" }} viewBox="0 0 128 900" fill="none">
@@ -116,8 +67,27 @@ const LandingPage: React.FC = () => {
       </div>
 
       {/* Header */}
-      <header style={headerStyle}>
-        <nav style={navStyle}>
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          width: "100%",
+          padding: "16px",
+          borderBottom: "1px solid #e5e7eb",
+          backgroundColor: "rgba(255, 255, 255, 0.9)",
+        }}
+      >
+        <div
+          style={{
+            maxWidth: "64rem",
+            margin: "0 auto",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: "16px",
+          }}
+        >
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <div
               style={{
@@ -141,7 +111,8 @@ const LandingPage: React.FC = () => {
             </div>
             <span style={{ fontSize: "20px", fontWeight: "600", color: "#111827" }}>macro tracker</span>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
+
+          <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
             <button
               style={{
                 background: "none",
@@ -149,6 +120,7 @@ const LandingPage: React.FC = () => {
                 color: "#6b7280",
                 cursor: "pointer",
                 fontSize: "16px",
+                padding: "8px",
               }}
               onClick={() => navigate("/about")}
             >
@@ -161,6 +133,7 @@ const LandingPage: React.FC = () => {
                 color: "#6b7280",
                 cursor: "pointer",
                 fontSize: "16px",
+                padding: "8px",
               }}
               onClick={() => navigate("/features")}
             >
@@ -173,6 +146,7 @@ const LandingPage: React.FC = () => {
                 color: "#6b7280",
                 cursor: "pointer",
                 fontSize: "16px",
+                padding: "8px",
               }}
               onClick={() => navigate("/pricing")}
             >
@@ -185,12 +159,14 @@ const LandingPage: React.FC = () => {
                 color: "#6b7280",
                 cursor: "pointer",
                 fontSize: "16px",
+                padding: "8px",
               }}
               onClick={() => navigate("/blog")}
             >
               Blog
             </button>
           </div>
+
           <button
             onClick={() => navigate("/signup")}
             style={{
@@ -205,113 +181,198 @@ const LandingPage: React.FC = () => {
           >
             Sign up
           </button>
-        </nav>
-      </header>
+        </div>
+      </div>
 
       {/* Main Content */}
-      <div style={mainContentStyle}>
-        <div style={{ maxWidth: "96rem", width: "100%", margin: "0 auto", textAlign: "center", padding: "0 16px" }}>
-          {/* Hero Text */}
-          <div style={heroStyle}>
-            <h1 style={titleStyle}>Track. Analyze. Improve.</h1>
-            <p
-              style={{
-                fontSize: "20px",
-                color: "#6b7280",
-                maxWidth: "32rem",
-                margin: "0 auto 32px auto",
-              }}
-            >
-              Take control of your nutrition journey with Macro Tracker. Log meals, track macros, and achieve your
-              health goals.
-            </p>
-            {/* Indicator dots */}
-            <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "48px" }}>
-              {[0, 1, 2, 3, 4].map((i) => (
-                <div
-                  key={i}
-                  style={{
-                    width: "8px",
-                    height: "8px",
-                    borderRadius: "50%",
-                    backgroundColor: i === 2 ? "#9ca3af" : "#e5e7eb",
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Cards */}
-          <div
+      <div
+        style={{
+          position: "relative",
+          zIndex: 10,
+          padding: "64px 16px",
+          textAlign: "center",
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
+        {/* Hero Text */}
+        <div
+          style={{
+            opacity: showContent ? 1 : 0,
+            transform: showContent ? "translateY(0)" : "translateY(32px)",
+            transition: "all 1s ease-out",
+            marginBottom: "64px",
+          }}
+        >
+          <h1
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "32px",
+              fontSize: "clamp(2.5rem, 6vw, 5rem)",
+              fontWeight: "bold",
+              color: "#111827",
+              marginBottom: "24px",
+              lineHeight: 1.1,
+              whiteSpace: "nowrap",
             }}
           >
-            {/* Track Card */}
-            <div
-              style={{
-                width: "320px",
-                height: "320px",
-                padding: "32px",
-                backgroundColor: "white",
-                borderRadius: "16px",
-                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-                opacity: showCards[0] ? 1 : 0,
-                transform: showCards[0] ? "translateY(0)" : "translateY(32px)",
-                transition: "all 0.7s ease-out",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
-              }}
-            >
-              <p style={{ color: "#6b7280", fontSize: "14px", marginBottom: "16px" }}>Track your meals</p>
-              <div style={{ fontSize: "48px", fontWeight: "bold", color: "#111827", marginBottom: "24px" }}>2,500</div>
-              <div style={{ width: "100%", height: "64px", marginBottom: "16px" }}>
-                <svg viewBox="0 0 200 60" style={{ width: "100%", height: "100%" }}>
-                  <path d="M10,40 Q50,20 100,30 T190,25" stroke="#e5e7eb" strokeWidth="2" fill="none" />
-                </svg>
-              </div>
-              <p style={{ fontSize: "12px", color: "#9ca3af" }}>
-                Daily calorie goal: <span style={{ fontWeight: "500" }}>2,500 kcal</span>
-              </p>
-            </div>
+            Track. Analyze. Improve.
+          </h1>
+          <p
+            style={{
+              fontSize: "20px",
+              color: "#6b7280",
+              maxWidth: "32rem",
+              margin: "0 auto 32px auto",
+              lineHeight: 1.6,
+            }}
+          >
+            Take control of your nutrition journey with Macro Tracker. Log meals, track macros, and achieve your health
+            goals.
+          </p>
+          {/* Indicator dots */}
+          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "48px" }}>
+            {[0, 1, 2, 3, 4].map((i) => (
+              <div
+                key={i}
+                style={{
+                  width: "8px",
+                  height: "8px",
+                  borderRadius: "50%",
+                  backgroundColor: i === 2 ? "#9ca3af" : "#e5e7eb",
+                }}
+              />
+            ))}
+          </div>
+        </div>
 
-            {/* Connect Sources Card */}
+        {/* Cards Container */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "32px",
+            flexWrap: "wrap",
+          }}
+        >
+          {/* Track Card */}
+          <div
+            style={{
+              width: "300px",
+              height: "300px",
+              padding: "32px",
+              backgroundColor: "white",
+              borderRadius: "16px",
+              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+              opacity: showCards[0] ? 1 : 0,
+              transform: showCards[0] ? "translateY(0)" : "translateY(32px)",
+              transition: "all 0.7s ease-out",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <p style={{ color: "#6b7280", fontSize: "14px", marginBottom: "16px" }}>Track your meals</p>
+            <div style={{ fontSize: "48px", fontWeight: "bold", color: "#111827", marginBottom: "24px" }}>2,500</div>
+            <div style={{ width: "100%", height: "64px", marginBottom: "16px" }}>
+              <svg viewBox="0 0 200 60" style={{ width: "100%", height: "100%" }}>
+                <path d="M10,40 Q50,20 100,30 T190,25" stroke="#e5e7eb" strokeWidth="2" fill="none" />
+              </svg>
+            </div>
+            <p style={{ fontSize: "12px", color: "#9ca3af" }}>
+              Daily calorie goal: <span style={{ fontWeight: "500" }}>2,500 kcal</span>
+            </p>
+          </div>
+
+          {/* Connect Sources Card */}
+          <div
+            style={{
+              width: "300px",
+              height: "300px",
+              padding: "32px",
+              backgroundColor: "white",
+              borderRadius: "16px",
+              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+              opacity: showCards[1] ? 1 : 0,
+              transform: showCards[1] ? "translateY(0)" : "translateY(32px)",
+              transition: "all 0.7s ease-out",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
+            <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#111827", marginBottom: "32px" }}>
+              Connect sources
+            </h3>
             <div
               style={{
-                width: "320px",
-                height: "320px",
-                padding: "32px",
-                backgroundColor: "white",
+                width: "64px",
+                height: "32px",
+                backgroundColor: "#111827",
                 borderRadius: "16px",
-                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-                opacity: showCards[1] ? 1 : 0,
-                transform: showCards[1] ? "translateY(0)" : "translateY(32px)",
-                transition: "all 0.7s ease-out",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                textAlign: "center",
+                marginBottom: "32px",
+                position: "relative",
               }}
             >
-              <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#111827", marginBottom: "32px" }}>
-                Connect sources
-              </h3>
               <div
                 style={{
-                  width: "64px",
-                  height: "32px",
-                  backgroundColor: "#111827",
-                  borderRadius: "16px",
-                  marginBottom: "32px",
-                  position: "relative",
+                  width: "24px",
+                  height: "24px",
+                  backgroundColor: "white",
+                  borderRadius: "50%",
+                  position: "absolute",
+                  top: "4px",
+                  right: "4px",
+                }}
+              ></div>
+            </div>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+                marginBottom: "24px",
+              }}
+            >
+              <div
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  backgroundColor: "black",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span style={{ color: "white", fontWeight: "bold", fontSize: "14px" }}>MT</span>
+              </div>
+              <div
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  backgroundColor: "#f97316",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <span style={{ color: "white", fontWeight: "bold", fontSize: "18px" }}>F</span>
+              </div>
+              <div
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  backgroundColor: "#22c55e",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
                 <div
@@ -320,164 +381,104 @@ const LandingPage: React.FC = () => {
                     height: "24px",
                     backgroundColor: "white",
                     borderRadius: "50%",
-                    position: "absolute",
-                    top: "4px",
-                    right: "4px",
                   }}
                 ></div>
               </div>
               <div
                 style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "16px",
-                  marginBottom: "24px",
+                  width: "48px",
+                  height: "48px",
+                  backgroundColor: "#dc2626",
+                  borderRadius: "12px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    backgroundColor: "black",
-                    borderRadius: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ color: "white", fontWeight: "bold", fontSize: "14px" }}>MT</span>
-                </div>
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    backgroundColor: "#f97316",
-                    borderRadius: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ color: "white", fontWeight: "bold", fontSize: "18px" }}>F</span>
-                </div>
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    backgroundColor: "#22c55e",
-                    borderRadius: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "24px",
-                      height: "24px",
-                      backgroundColor: "white",
-                      borderRadius: "50%",
-                    }}
-                  ></div>
-                </div>
-                <div
-                  style={{
-                    width: "48px",
-                    height: "48px",
-                    backgroundColor: "#dc2626",
-                    borderRadius: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ color: "white", fontWeight: "bold", fontSize: "18px" }}>N</span>
-                </div>
+                <span style={{ color: "white", fontWeight: "bold", fontSize: "18px" }}>N</span>
               </div>
-              <button
-                style={{
-                  backgroundColor: "#1f2937",
-                  color: "white",
-                  padding: "8px 24px",
-                  borderRadius: "24px",
-                  fontSize: "14px",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-              >
-                📱 Download on the App Store
-              </button>
             </div>
+            <button
+              style={{
+                backgroundColor: "#1f2937",
+                color: "white",
+                padding: "8px 24px",
+                borderRadius: "24px",
+                fontSize: "14px",
+                border: "none",
+                cursor: "pointer",
+              }}
+            >
+              📱 Download on the App Store
+            </button>
+          </div>
 
-            {/* Learn More Card */}
+          {/* Learn More Card */}
+          <div
+            style={{
+              width: "300px",
+              height: "300px",
+              padding: "32px",
+              backgroundColor: "white",
+              borderRadius: "16px",
+              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
+              opacity: showCards[2] ? 1 : 0,
+              transform: showCards[2] ? "translateY(0)" : "translateY(32px)",
+              transition: "all 0.7s ease-out",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              textAlign: "center",
+            }}
+          >
             <div
               style={{
-                width: "320px",
-                height: "320px",
-                padding: "32px",
-                backgroundColor: "white",
-                borderRadius: "16px",
-                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-                opacity: showCards[2] ? 1 : 0,
-                transform: showCards[2] ? "translateY(0)" : "translateY(32px)",
-                transition: "all 0.7s ease-out",
+                width: "64px",
+                height: "64px",
+                backgroundColor: "#f3f4f6",
+                borderRadius: "50%",
                 display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
                 alignItems: "center",
-                textAlign: "center",
+                justifyContent: "center",
+                marginBottom: "24px",
               }}
             >
               <div
                 style={{
-                  width: "64px",
-                  height: "64px",
-                  backgroundColor: "#f3f4f6",
+                  width: "32px",
+                  height: "32px",
+                  backgroundColor: "#d1d5db",
+                  borderRadius: "50%",
+                }}
+              ></div>
+            </div>
+            <div style={{ marginBottom: "24px" }}>
+              <div style={{ fontSize: "14px", color: "#6b7280", marginBottom: "16px" }}>What's my protein intake?</div>
+              <div style={{ fontSize: "14px", color: "#6b7280", marginBottom: "16px" }}>
+                Am I meeting my macro goals?
+              </div>
+              <div style={{ fontSize: "14px", color: "#6b7280" }}>How can I improve my diet?</div>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+              <div>
+                <p style={{ fontSize: "18px", fontWeight: "600", color: "#111827", margin: 0 }}>
+                  Learn more from your data
+                </p>
+                <p style={{ fontSize: "14px", color: "#6b7280", margin: 0 }}>and make better decisions</p>
+              </div>
+              <div
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  backgroundColor: "#e5e7eb",
                   borderRadius: "50%",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginBottom: "24px",
                 }}
               >
-                <div
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    backgroundColor: "#d1d5db",
-                    borderRadius: "50%",
-                  }}
-                ></div>
-              </div>
-              <div style={{ marginBottom: "24px" }}>
-                <div style={{ fontSize: "14px", color: "#6b7280", marginBottom: "16px" }}>
-                  What's my protein intake?
-                </div>
-                <div style={{ fontSize: "14px", color: "#6b7280", marginBottom: "16px" }}>
-                  Am I meeting my macro goals?
-                </div>
-                <div style={{ fontSize: "14px", color: "#6b7280" }}>How can I improve my diet?</div>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-                <div>
-                  <p style={{ fontSize: "18px", fontWeight: "600", color: "#111827", margin: 0 }}>
-                    Learn more from your data
-                  </p>
-                  <p style={{ fontSize: "14px", color: "#6b7280", margin: 0 }}>and make better decisions</p>
-                </div>
-                <div
-                  style={{
-                    width: "32px",
-                    height: "32px",
-                    backgroundColor: "#e5e7eb",
-                    borderRadius: "50%",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <span style={{ color: "#6b7280" }}>→</span>
-                </div>
+                <span style={{ color: "#6b7280" }}>→</span>
               </div>
             </div>
           </div>
