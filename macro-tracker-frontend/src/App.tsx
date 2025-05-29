@@ -1,16 +1,16 @@
-import type React from "react"
-import { Routes, Route, useLocation } from "react-router-dom"
-import Signup from "./Signup"
-import Login from "./Login"
-import Dashboard from "./Dashboard"
-import ProtectedRoute from "./ProtectedRoute"
-import Navbar from "./Navbar"
-import FoodSearch from "./FoodSearch"
-import LandingPage from "./LandingPage"
+import React from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
+import Signup from './Signup';
+import Login from './Login';
+import Dashboard from './Dashboard';
+import ProtectedRoute from './ProtectedRoute';
+import Navbar from './Navbar';
+import FoodSearch from './FoodSearch';
+import LandingPage from './LandingPage';
 
 const App: React.FC = () => {
-  const location = useLocation()
-  const isLandingPage = location.pathname === "/"
+  const location = useLocation();
+  const isLandingPage = location.pathname === '/';
 
   return (
     <>
@@ -37,7 +37,7 @@ const App: React.FC = () => {
         />
       </Routes>
     </>
-  )
-}
+  );
+};
 
-export default App
+export default App;
