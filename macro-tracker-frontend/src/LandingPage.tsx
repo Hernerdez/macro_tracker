@@ -31,23 +31,6 @@ const LandingPage: React.FC = () => {
         overflow: "hidden",
       }}
     >
-      {/* Debug indicator - should be visible */}
-      <div
-        style={{
-          position: "fixed",
-          top: "10px",
-          left: "10px",
-          background: "red",
-          color: "white",
-          padding: "10px",
-          zIndex: 9999,
-          fontSize: "14px",
-          borderRadius: "4px",
-        }}
-      >
-        CONTENT LOADED: {showContent ? "YES" : "NO"}
-      </div>
-
       {/* Curved Side Bars */}
       <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, pointerEvents: "none", zIndex: 1 }}>
         {/* Left curved sidebar */}
@@ -83,9 +66,9 @@ const LandingPage: React.FC = () => {
             margin: "0 auto",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "center",
+            gap: "32px",
             flexWrap: "wrap",
-            gap: "16px",
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -112,7 +95,7 @@ const LandingPage: React.FC = () => {
             <span style={{ fontSize: "20px", fontWeight: "600", color: "#111827" }}>macro tracker</span>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
             <button
               style={{
                 background: "none",
@@ -193,6 +176,10 @@ const LandingPage: React.FC = () => {
           textAlign: "center",
           maxWidth: "1200px",
           margin: "0 auto",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
         }}
       >
         {/* Hero Text */}
@@ -202,6 +189,8 @@ const LandingPage: React.FC = () => {
             transform: showContent ? "translateY(0)" : "translateY(32px)",
             transition: "all 1s ease-out",
             marginBottom: "64px",
+            textAlign: "center",
+            width: "100%",
           }}
         >
           <h1
@@ -212,6 +201,8 @@ const LandingPage: React.FC = () => {
               marginBottom: "24px",
               lineHeight: 1.1,
               whiteSpace: "nowrap",
+              textAlign: "center",
+              width: "100%",
             }}
           >
             Track. Analyze. Improve.
@@ -223,13 +214,14 @@ const LandingPage: React.FC = () => {
               maxWidth: "32rem",
               margin: "0 auto 32px auto",
               lineHeight: 1.6,
+              textAlign: "center",
             }}
           >
             Take control of your nutrition journey with Macro Tracker. Log meals, track macros, and achieve your health
             goals.
           </p>
           {/* Indicator dots */}
-          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "48px" }}>
+          <div style={{ display: "flex", justifyContent: "center", gap: "8px", marginBottom: "48px", width: "100%" }}>
             {[0, 1, 2, 3, 4].map((i) => (
               <div
                 key={i}
@@ -253,6 +245,7 @@ const LandingPage: React.FC = () => {
             justifyContent: "center",
             gap: "32px",
             flexWrap: "wrap",
+            width: "100%",
           }}
         >
           {/* Track Card */}
@@ -265,13 +258,24 @@ const LandingPage: React.FC = () => {
               borderRadius: "16px",
               boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
               opacity: showCards[0] ? 1 : 0,
-              transform: showCards[0] ? "translateY(0)" : "translateY(32px)",
+              transform: showCards[0] ? "translateY(0) rotate(-2deg)" : "translateY(32px)",
               transition: "all 0.7s ease-out",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = showCards[0]
+                ? "translateY(-8px) rotate(-2deg) scale(1.05)"
+                : "translateY(32px)"
+              e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = showCards[0] ? "translateY(0) rotate(-2deg)" : "translateY(32px)"
+              e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
             }}
           >
             <p style={{ color: "#6b7280", fontSize: "14px", marginBottom: "16px" }}>Track your meals</p>
@@ -296,13 +300,24 @@ const LandingPage: React.FC = () => {
               borderRadius: "16px",
               boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
               opacity: showCards[1] ? 1 : 0,
-              transform: showCards[1] ? "translateY(0)" : "translateY(32px)",
+              transform: showCards[1] ? "translateY(0) rotate(1deg)" : "translateY(32px)",
               transition: "all 0.7s ease-out",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = showCards[1]
+                ? "translateY(-8px) rotate(1deg) scale(1.05)"
+                : "translateY(32px)"
+              e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = showCards[1] ? "translateY(0) rotate(1deg)" : "translateY(32px)"
+              e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
             }}
           >
             <h3 style={{ fontSize: "20px", fontWeight: "600", color: "#111827", marginBottom: "32px" }}>
@@ -423,13 +438,24 @@ const LandingPage: React.FC = () => {
               borderRadius: "16px",
               boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
               opacity: showCards[2] ? 1 : 0,
-              transform: showCards[2] ? "translateY(0)" : "translateY(32px)",
+              transform: showCards[2] ? "translateY(0) rotate(2deg)" : "translateY(32px)",
               transition: "all 0.7s ease-out",
               display: "flex",
               flexDirection: "column",
               justifyContent: "center",
               alignItems: "center",
               textAlign: "center",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = showCards[2]
+                ? "translateY(-8px) rotate(2deg) scale(1.05)"
+                : "translateY(32px)"
+              e.currentTarget.style.boxShadow = "0 20px 25px -5px rgba(0, 0, 0, 0.15)"
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = showCards[2] ? "translateY(0) rotate(2deg)" : "translateY(32px)"
+              e.currentTarget.style.boxShadow = "0 10px 15px -3px rgba(0, 0, 0, 0.1)"
             }}
           >
             <div
