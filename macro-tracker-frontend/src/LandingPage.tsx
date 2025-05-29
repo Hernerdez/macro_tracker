@@ -35,22 +35,42 @@ const LandingPage: React.FC = () => {
     e.preventDefault()
     setLoginError('')
     try {
-      const formData = new FormData()
-      formData.append('username', loginForm.email) // OAuth2 expects 'username' field
-      formData.append('password', loginForm.password)
+      const params = new URLSearchParams()
+      params.append('username', loginForm.email)
+      params.append('password', loginForm.password)
       
-      const response = await axios.post('https://macro-tracker-api.onrender.com/login/', formData, {
+      console.log('Sending login request with:', {
+        email: loginForm.email,
+        password: '***'
+      })
+      
+      const response = await axios.post('https://macro-tracker-api.onrender.com/login/', params, {
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json'
         }
       })
-      localStorage.setItem('token', response.data.access_token)
-      setShowSignupModal(false)
-      setModalMode('signup')
-      setLoginForm({ email: '', password: '' })
-      navigate('/dashboard')
-    } catch (err) {
-      setLoginError('Invalid email or password')
+      
+      console.log('Login response:', response.data)
+      
+      if (response.data.access_token) {
+        console.log('Login successful, storing token')
+        localStorage.setItem('token', response.data.access_token)
+        setShowSignupModal(false)
+        setModalMode('signup')
+        setLoginForm({ email: '', password: '' })
+        navigate('/dashboard')
+      } else {
+        console.error('No access token in response:', response.data)
+        setLoginError('Login failed - no token received')
+      }
+    } catch (err: any) {
+      console.error('Login error details:', {
+        status: err.response?.status,
+        data: err.response?.data,
+        message: err.message
+      })
+      setLoginError(err.response?.data?.detail || 'Invalid email or password')
     }
   }
 
