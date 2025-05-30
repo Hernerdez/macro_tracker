@@ -90,9 +90,9 @@ const LandingPage: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('https://macro-tracker-api.onrender.com/users/', { //users is signup in backend
+      const response = await axios.post('https://macro-tracker-api.onrender.com/users/', {
         email: signupForm.email,
-        password_hash: signupForm.password,
+        password: signupForm.password,
       })
       
       if (response.data) {
@@ -121,7 +121,18 @@ const LandingPage: React.FC = () => {
       }
     } catch (err: any) {
       console.error('Signup error:', err.response?.data || err.message)
-      setSignupError(err.response?.data?.detail || 'Error creating account')
+      if (err.response?.data?.detail) {
+        const errorDetail = err.response.data.detail
+        if (Array.isArray(errorDetail)) {
+          setSignupError(errorDetail.map(err => err.msg).join(', '))
+        } else {
+          setSignupError(errorDetail)
+        }
+      } else if (err.message === 'Network Error') {
+        setSignupError('Unable to connect to the server. Please try again later.')
+      } else {
+        setSignupError('Error creating account')
+      }
     }
   }
 
