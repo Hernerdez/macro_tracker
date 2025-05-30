@@ -90,21 +90,37 @@ const LandingPage: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('https://macro-tracker-api.onrender.com/signup/', {
+      const response = await axios.post('https://macro-tracker-api.onrender.com/users/', { //users is signup in backend
         email: signupForm.email,
-        password: signupForm.password,
+        password_hash: signupForm.password,
       })
       
-      if (response.data.token) {
-        localStorage.setItem('token', response.data.token)
-        setShowSignupModal(false)
-        setModalMode('signup')
-        setSignupForm({ email: '', password: '', confirmPassword: '' })
-        navigate('/dashboard')
+      if (response.data) {
+        const loginResponse = await axios.post('https://macro-tracker-api.onrender.com/login/', 
+          new URLSearchParams({
+            username: signupForm.email,
+            password: signupForm.password
+          }), {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          }
+        )
+        
+        if (loginResponse.data.access_token) {
+          localStorage.setItem('token', loginResponse.data.access_token)
+          setShowSignupModal(false)
+          setModalMode('signup')
+          setSignupForm({ email: '', password: '', confirmPassword: '' })
+          navigate('/dashboard')
+        } else {
+          setSignupError('Account created but login failed')
+        }
       } else {
         setSignupError('Error creating account')
       }
     } catch (err: any) {
+      console.error('Signup error:', err.response?.data || err.message)
       setSignupError(err.response?.data?.detail || 'Error creating account')
     }
   }
