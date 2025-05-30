@@ -14,6 +14,8 @@ const LandingPage: React.FC = () => {
   const [modalMode, setModalMode] = useState<'signup' | 'login'>('signup')
   const [loginForm, setLoginForm] = useState({ email: '', password: '' })
   const [loginError, setLoginError] = useState('')
+  const [signupForm, setSignupForm] = useState({ email: '', password: '', confirmPassword: '' })
+  const [signupError, setSignupError] = useState('')
 
   useEffect(() => {
     console.log("Landing page mounted!")
@@ -71,6 +73,39 @@ const LandingPage: React.FC = () => {
         message: err.message
       })
       setLoginError(err.response?.data?.detail || 'Invalid email or password')
+    }
+  }
+
+  const handleSignupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSignupForm({ ...signupForm, [e.target.name]: e.target.value })
+  }
+
+  const handleSignupSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setSignupError('')
+    
+    if (signupForm.password !== signupForm.confirmPassword) {
+      setSignupError('Passwords do not match')
+      return
+    }
+
+    try {
+      const response = await axios.post('https://macro-tracker-api.onrender.com/signup/', {
+        email: signupForm.email,
+        password: signupForm.password,
+      })
+      
+      if (response.data.token) {
+        localStorage.setItem('token', response.data.token)
+        setShowSignupModal(false)
+        setModalMode('signup')
+        setSignupForm({ email: '', password: '', confirmPassword: '' })
+        navigate('/dashboard')
+      } else {
+        setSignupError('Error creating account')
+      }
+    } catch (err: any) {
+      setSignupError(err.response?.data?.detail || 'Error creating account')
     }
   }
 
@@ -713,10 +748,13 @@ const LandingPage: React.FC = () => {
                 </button>
                 <div style={{ width: "100%", borderBottom: "1px solid #e2e8f0", margin: "16px 0" }}></div>
                 {/* Email signup form (not functional, just UI for now) */}
-                <form style={{ width: "100%" }}>
+                <form style={{ width: "100%" }} onSubmit={handleSignupSubmit}>
                   <input
                     type="email"
+                    name="email"
                     placeholder="Your email"
+                    value={signupForm.email}
+                    onChange={handleSignupChange}
                     style={{
                       width: "100%",
                       padding: "12px 20px",
@@ -732,7 +770,28 @@ const LandingPage: React.FC = () => {
                   />
                   <input
                     type="password"
+                    name="password"
                     placeholder="Create a password"
+                    value={signupForm.password}
+                    onChange={handleSignupChange}
+                    style={{
+                      width: "100%",
+                      padding: "12px 20px",
+                      marginBottom: 12,
+                      borderRadius: "9999px",
+                      border: "1px solid #e2e8f0",
+                      background: "white",
+                      fontSize: 16,
+                      outline: "none",
+                      color: "black",
+                    }}
+                  />
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    value={signupForm.confirmPassword}
+                    onChange={handleSignupChange}
                     style={{
                       width: "100%",
                       padding: "12px 20px",
@@ -745,6 +804,7 @@ const LandingPage: React.FC = () => {
                       color: "black",
                     }}
                   />
+                  {signupError && <div style={{ color: "#dc2626", textAlign: "center", marginBottom: 8 }}>{signupError}</div>}
                   <button
                     type="submit"
                     style={{
@@ -760,7 +820,7 @@ const LandingPage: React.FC = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Continue with email
+                    Create account
                   </button>
                 </form>
                 <div style={{ textAlign: "center", fontSize: 14, color: "#64748b", marginBottom: 8 }}>
