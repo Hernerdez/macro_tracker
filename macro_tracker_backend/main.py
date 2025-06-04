@@ -30,11 +30,11 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://macro-tracker-gamma.vercel.app",  # ✅ Frontend domain
-        "https://macro-tracker-6przf2qq4-hernerdezs-projects.vercel.app",  # ✅ Vercel deployment
         "http://localhost:3000",                   # ✅ Local dev
         "http://localhost:5173",                   # ✅ Local dev
         "http://127.0.0.1:5173",                   # ✅ Local dev alternative
         "http://127.0.0.1:5174",                   # ✅ Local dev alternative
+        "http://localhost:5174"
     ],
     allow_credentials=True,
     allow_methods=["*"],
