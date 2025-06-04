@@ -1,13 +1,12 @@
-from .routers import admin
+from macro_tracker_backend.routers import admin
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import timedelta
 
-from . import models, schemas
-from .database import engine, SessionLocal
-from .auth import hash_password, verify_password, create_access_token
-from .auth import get_current_user
+from macro_tracker_backend import models, schemas
+from macro_tracker_backend.database import engine, SessionLocal
+from macro_tracker_backend.auth import hash_password, verify_password, create_access_token, get_current_user
 
 from pydantic import Field
 from fastapi.security import OAuth2PasswordRequestForm
@@ -33,6 +32,9 @@ app.add_middleware(
         "https://macro-tracker-gamma.vercel.app",  # ✅ Frontend domain
         "http://localhost:3000",                   # ✅ Local dev
         "http://localhost:5173",                   # ✅ Local dev
+        "http://127.0.0.1:5173",                   # ✅ Local dev alternative
+        "http://127.0.0.1:5174",                   # ✅ Local dev alternative
+        "http://localhost:5174"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -105,19 +107,29 @@ def get_foods(db: Session = Depends(get_db)):
 
 @app.post("/login/")
 def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)):
+    print(f"Login attempt for email: {form_data.username}")
+    
     user = db.query(models.User).filter(models.User.email == form_data.username).first()
-    if not user or not verify_password(form_data.password, user.password_hash):
+    if not user:
+        print(f"No user found with email: {form_data.username}")
         raise HTTPException(status_code=400, detail="Invalid credentials")
     
+    print(f"Found user: {user.email}")
+    print(f"Verifying password...")
+    
+    if not verify_password(form_data.password, user.password_hash):
+        print("Password verification failed")
+        raise HTTPException(status_code=400, detail="Invalid credentials")
+    
+    print("Password verified successfully")
+    
     access_token = create_access_token(
-        data={"sub": user.email, "role": user.role},  # include role
+        data={"sub": user.email, "role": user.role},
         expires_delta=timedelta(minutes=60)
-)
+    )
+    print("Access token created successfully")
+    
     return {"access_token": access_token, "token_type": "bearer"}
-
-from fastapi import Depends
-from .auth import get_current_user
-from . import schemas, models
 
 @app.get("/me/", response_model=schemas.UserOut)
 def read_users_me(current_user: models.User = Depends(get_current_user)):

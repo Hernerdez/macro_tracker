@@ -1,7 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, Date
 from sqlalchemy.orm import relationship
-from .database import Base
-
+from macro_tracker_backend.database import Base
 
 class User(Base):
     __tablename__ = "users"
@@ -35,14 +34,13 @@ class Food(Base):
     id = Column(Integer, primary_key=True, index=True)
     meal_id = Column(Integer, ForeignKey("meals.id"))
     name = Column(String)
-    protein = Column(Integer)
-    carbs = Column(Integer)
-    fats = Column(Integer)
-    calories = Column(Integer)
+    protein = Column(Float)
+    carbs = Column(Float)
+    fats = Column(Float)
+    calories = Column(Float)
     serving_size = Column(Float)
     serving_unit = Column(String)
     servings = Column(Integer)
     time_logged = Column(DateTime, nullable=True)
-
 
     meal = relationship("Meal", back_populates="foods")

@@ -4,9 +4,8 @@ from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from .database import SessionLocal
-from . import models
-from .database import get_db
+from macro_tracker_backend.database import SessionLocal, get_db
+from macro_tracker_backend import models
 
 from dotenv import load_dotenv
 import os
@@ -27,7 +26,11 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return pwd_context.verify(plain_password, hashed_password)
 
 # ---------------- JWT Config ----------------
-SECRET_KEY = os.getenv("SECRET_KEY") # ✅ USE ONLY ONE — consistent with create_access_token
+SECRET_KEY = os.getenv("SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError("SECRET_KEY environment variable is not set!")
+print("✅ SECRET_KEY is configured")
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 

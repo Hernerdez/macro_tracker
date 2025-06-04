@@ -5,10 +5,10 @@ from typing import Optional
 # Food Schemas
 class FoodBase(BaseModel):
     name: str
-    protein: int
-    carbs: int
-    fats: int
-    calories: int
+    protein: float
+    carbs: float
+    fats: float
+    calories: float
 
 class FoodCreate(FoodBase):
     meal_id: int
