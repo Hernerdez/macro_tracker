@@ -26,6 +26,11 @@ const Signup: React.FC = () => {
     }
 
     setIsLoading(true);
+    // DEPLOY TEST LOG
+    console.log("DEPLOY TEST: Signup payload", {
+      email: formData.email,
+      password: formData.password,
+    });
     try {
       const response = await api.post('/users/', {
         email: formData.email,

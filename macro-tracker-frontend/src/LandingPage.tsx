@@ -89,6 +89,12 @@ const LandingPage: React.FC = () => {
       return
     }
 
+    // DEPLOY TEST LOG
+    console.log("DEPLOY TEST: Signup payload", {
+      email: signupForm.email,
+      password: signupForm.password,
+    });
+
     try {
       const response = await api.post('/users/', {
         email: signupForm.email,
