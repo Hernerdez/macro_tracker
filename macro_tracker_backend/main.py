@@ -1,4 +1,4 @@
-from routers import admin
+from macro_tracker_backend.routers import admin
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
