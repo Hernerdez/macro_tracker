@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from models import User
-from auth import require_admin, get_current_user
-from database import get_db
-import schemas
+from macro_tracker_backend.models import User
+from macro_tracker_backend.auth import require_admin, get_current_user
+from macro_tracker_backend.database import get_db
+from macro_tracker_backend import schemas
 
 
 router = APIRouter(

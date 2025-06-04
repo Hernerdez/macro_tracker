@@ -4,9 +4,8 @@ from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from database import SessionLocal
-import models
-from database import get_db
+from macro_tracker_backend.database import SessionLocal, get_db
+from macro_tracker_backend import models
 
 from dotenv import load_dotenv
 import os

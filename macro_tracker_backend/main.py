@@ -4,10 +4,9 @@ from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import timedelta
 
-import models, schemas
-from database import engine, SessionLocal
-from auth import hash_password, verify_password, create_access_token
-from auth import get_current_user
+from macro_tracker_backend import models, schemas
+from macro_tracker_backend.database import engine, SessionLocal
+from macro_tracker_backend.auth import hash_password, verify_password, create_access_token, get_current_user
 
 from pydantic import Field
 from fastapi.security import OAuth2PasswordRequestForm
