@@ -22,10 +22,23 @@ interface Meal {
   foods: Food[];
 }
 
+interface DailyTotals {
+  calories: number;
+  protein: number;
+  carbs: number;
+  fats: number;
+}
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [meals, setMeals] = useState<Meal[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [dailyTotals, setDailyTotals] = useState<DailyTotals>({
+    calories: 0,
+    protein: 0,
+    carbs: 0,
+    fats: 0
+  });
   const [selectedDate, setSelectedDate] = useState<string>(() => {
     const today = new Date();
     const yyyy = today.getFullYear();
@@ -37,13 +50,13 @@ const Dashboard: React.FC = () => {
   const handleLogout = (): void => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    navigate('/login');
+    navigate('/');
   };
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
-      navigate('/login');
+      navigate('/');
     }
   }, [navigate]);
 
@@ -55,9 +68,22 @@ const Dashboard: React.FC = () => {
     api.get('/dashboard/')
       .then(res => {
         const mealsForDate: Meal[] = (res.data || []).filter((meal: Meal) => meal.date === selectedDate);
-        const MEAL_ORDER = ['Breakfast', 'Lunch', 'Dinner', 'Sweet Treats'];
+        const MEAL_ORDER = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
         mealsForDate.sort((a, b) => MEAL_ORDER.indexOf(a.meal_name) - MEAL_ORDER.indexOf(b.meal_name));
         setMeals(mealsForDate);
+
+        // Calculate daily totals
+        const totals = mealsForDate.reduce((acc, meal) => {
+          meal.foods.forEach(food => {
+            acc.calories += food.calories;
+            acc.protein += food.protein;
+            acc.carbs += food.carbs;
+            acc.fats += food.fats;
+          });
+          return acc;
+        }, { calories: 0, protein: 0, carbs: 0, fats: 0 });
+        setDailyTotals(totals);
+        
         setLoading(false);
       })
       .catch(err => {
@@ -66,63 +92,135 @@ const Dashboard: React.FC = () => {
       });
   }, [selectedDate]);
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  };
+
   return (
-    <div className="p-6 bg-gray-50 min-h-screen text-gray-900 overflow-hidden">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold text-primary animate-fade-in">Dashboard</h1>
-        <button
-          onClick={handleLogout}
-          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded shadow transition duration-300"
-        >
-          Logout
-        </button>
-      </div>
-
-      <div className="mb-6">
-        <label htmlFor="date-picker" className="block font-semibold text-gray-700 mb-1">Select Date:</label>
-        <input
-          id="date-picker"
-          type="date"
-          value={selectedDate}
-          onChange={(e) => setSelectedDate(e.target.value)}
-          className="border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-        />
-      </div>
-
-      <h2 className="text-xl font-semibold mb-4">Your Meals for {selectedDate}</h2>
-      {loading ? (
-        <p className="text-gray-500">Loading…</p>
-      ) : meals.length === 0 ? (
-        <p className="text-gray-500">No meals logged for this date.</p>
-      ) : (
-        meals.map((meal) => (
-          <div
-            key={meal.id}
-            className="mb-4 p-4 rounded shadow bg-white transition-transform duration-300 hover:scale-105 animate-fade-in"
-          >
-            <h3 className="text-lg font-bold mb-2 text-primary">{meal.meal_name}</h3>
-            {meal.foods.length === 0 ? (
-              <p className="text-gray-500">No foods logged for this meal.</p>
-            ) : (
-              <ul className="space-y-1">
-                {meal.foods.map((food) => (
-                  <li key={food.id} className="flex justify-between items-center text-sm">
-                    <span>
-                      <strong>{food.name}</strong> - {food.calories} kcal, {food.protein}g protein, {food.carbs}g carbs, {food.fats}g fat
-                      {food.serving_size && food.serving_unit && (
-                        <> ({food.serving_size} {food.serving_unit}{food.servings ? ` x${food.servings}` : ''})</>
-                      )}
-                      {food.time_logged && (
-                        <> @ {new Date(food.time_logged).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</>
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-gray-900">Macro Tracker</h1>
+            <button
+              onClick={handleLogout}
+              className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
+              Logout
+            </button>
           </div>
-        ))
-      )}
+        </div>
+      </header>
+
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Date Selector */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-semibold text-gray-900">{formatDate(selectedDate)}</h2>
+            <input
+              type="date"
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+        </div>
+
+        {/* Daily Summary Cards */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+          <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">Total Calories</dt>
+              <dd className="mt-1 text-3xl font-semibold text-indigo-600">{dailyTotals.calories}</dd>
+            </div>
+          </div>
+          <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">Protein</dt>
+              <dd className="mt-1 text-3xl font-semibold text-green-600">{dailyTotals.protein}g</dd>
+            </div>
+          </div>
+          <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">Carbs</dt>
+              <dd className="mt-1 text-3xl font-semibold text-blue-600">{dailyTotals.carbs}g</dd>
+            </div>
+          </div>
+          <div className="bg-white overflow-hidden shadow rounded-lg">
+            <div className="px-4 py-5 sm:p-6">
+              <dt className="text-sm font-medium text-gray-500 truncate">Fats</dt>
+              <dd className="mt-1 text-3xl font-semibold text-yellow-600">{dailyTotals.fats}g</dd>
+            </div>
+          </div>
+        </div>
+
+        {/* Meals Section */}
+        <div className="space-y-6">
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
+              <p className="mt-4 text-gray-500">Loading your meals...</p>
+            </div>
+          ) : meals.length === 0 ? (
+            <div className="text-center py-12 bg-white rounded-lg shadow">
+              <h3 className="text-lg font-medium text-gray-900">No meals logged for this date</h3>
+              <p className="mt-2 text-gray-500">Start tracking your nutrition by adding a meal!</p>
+              <div className="mt-6">
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  Add Meal
+                </button>
+              </div>
+            </div>
+          ) : (
+            meals.map((meal) => (
+              <div key={meal.id} className="bg-white shadow rounded-lg overflow-hidden">
+                <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
+                  <h3 className="text-lg leading-6 font-medium text-gray-900">{meal.meal_name}</h3>
+                </div>
+                <div className="px-4 py-5 sm:p-6">
+                  {meal.foods.length === 0 ? (
+                    <p className="text-gray-500 text-center py-4">No foods logged for this meal</p>
+                  ) : (
+                    <ul className="divide-y divide-gray-200">
+                      {meal.foods.map((food) => (
+                        <li key={food.id} className="py-4">
+                          <div className="flex items-center justify-between">
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate">{food.name}</p>
+                              <p className="text-sm text-gray-500">
+                                {food.calories} kcal • {food.protein}g protein • {food.carbs}g carbs • {food.fats}g fat
+                                {food.serving_size && food.serving_unit && (
+                                  <span className="ml-2">
+                                    ({food.serving_size} {food.serving_unit}{food.servings ? ` x${food.servings}` : ''})
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+                            {food.time_logged && (
+                              <div className="ml-4 flex-shrink-0">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                  {new Date(food.time_logged).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                <div className="px-4 py-4 sm:px-6 bg-gray-50">
+                  <button className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                    Add Food
+                  </button>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </main>
     </div>
   );
 };
