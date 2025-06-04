@@ -21,7 +21,7 @@ const FoodSearch: React.FC = () => {
   const [error, setError] = useState<string>('');
 
   useEffect(() => {
-    if (!query) {
+    if (!query) { 
       setResults([]);
       return;
     }
