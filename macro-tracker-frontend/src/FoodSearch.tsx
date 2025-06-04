@@ -1,7 +1,6 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import api from './axios';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 interface Food {
   id: number;
@@ -30,7 +29,6 @@ const FoodSearch: React.FC = () => {
   const [servings, setServings] = useState(1);
   const [timeLogged, setTimeLogged] = useState('');
   const [mealType, setMealType] = useState('Breakfast');
-  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch user's meals for today (to get meal IDs)
