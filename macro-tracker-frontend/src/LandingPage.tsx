@@ -89,33 +89,51 @@ const LandingPage: React.FC = () => {
       return
     }
 
-    // DEPLOY TEST LOG
-    console.log("DEPLOY TEST: Signup payload", {
-      email: signupForm.email,
-      password: signupForm.password,
-    });
-
     try {
-      const response = await api.post('/users/', {
+      // First, create the account
+      const signupResponse = await api.post('/users/', {
         email: signupForm.email,
         password: signupForm.password,
       })
       
-      if (response.data) {
+      if (signupResponse.data) {
         // Store user info in localStorage
         localStorage.setItem('user', JSON.stringify({
-          id: response.data.id,
-          email: response.data.email,
-          role: response.data.role
+          id: signupResponse.data.id,
+          email: signupResponse.data.email,
+          role: signupResponse.data.role
         }))
         
-        // Close modal and reset form
-        setShowSignupModal(false)
-        setModalMode('signup')
-        setSignupForm({ email: '', password: '', confirmPassword: '' })
-        
-        // Navigate to dashboard
-        navigate('/dashboard')
+        // Now automatically log in the user
+        try {
+          const formData = new FormData()
+          formData.append('username', signupForm.email)
+          formData.append('password', signupForm.password)
+          
+          const loginResponse = await api.post('/login/', formData, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            }
+          })
+          
+          if (loginResponse.data.access_token) {
+            localStorage.setItem('token', loginResponse.data.access_token)
+            
+            // Close modal and reset form
+            setShowSignupModal(false)
+            setModalMode('signup')
+            setSignupForm({ email: '', password: '', confirmPassword: '' })
+            
+            // Navigate to dashboard
+            navigate('/dashboard')
+          } else {
+            console.error('No access token in login response:', loginResponse.data)
+            setSignupError('Account created but login failed - please try logging in manually')
+          }
+        } catch (loginErr: any) {
+          console.error('Auto-login error:', loginErr)
+          setSignupError('Account created but login failed - please try logging in manually')
+        }
       } else {
         setSignupError('Error creating account')
       }
