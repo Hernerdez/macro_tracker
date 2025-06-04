@@ -103,7 +103,7 @@ const Dashboard: React.FC = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Macro Tracker</h1>
+            <h1 className="text-2xl font-bold text-black">Macro Tracker</h1>
             <button
               onClick={handleLogout}
               className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
@@ -118,7 +118,7 @@ const Dashboard: React.FC = () => {
         {/* Date Selector */}
         <div className="mb-8">
           <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold text-gray-900">{formatDate(selectedDate)}</h2>
+            <h2 className="text-xl font-semibold text-black">{formatDate(selectedDate)}</h2>
             <input
               type="date"
               value={selectedDate}
@@ -132,26 +132,26 @@ const Dashboard: React.FC = () => {
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">Total Calories</dt>
-              <dd className="mt-1 text-3xl font-semibold text-indigo-600">{dailyTotals.calories}</dd>
+              <dt className="text-sm font-medium text-black truncate">Total Calories</dt>
+              <dd className="mt-1 text-3xl font-semibold text-black">{dailyTotals.calories}</dd>
             </div>
           </div>
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">Protein</dt>
-              <dd className="mt-1 text-3xl font-semibold text-green-600">{dailyTotals.protein}g</dd>
+              <dt className="text-sm font-medium text-black truncate">Protein</dt>
+              <dd className="mt-1 text-3xl font-semibold text-black">{dailyTotals.protein}g</dd>
             </div>
           </div>
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">Carbs</dt>
-              <dd className="mt-1 text-3xl font-semibold text-blue-600">{dailyTotals.carbs}g</dd>
+              <dt className="text-sm font-medium text-black truncate">Carbs</dt>
+              <dd className="mt-1 text-3xl font-semibold text-black">{dailyTotals.carbs}g</dd>
             </div>
           </div>
           <div className="bg-white overflow-hidden shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
-              <dt className="text-sm font-medium text-gray-500 truncate">Fats</dt>
-              <dd className="mt-1 text-3xl font-semibold text-yellow-600">{dailyTotals.fats}g</dd>
+              <dt className="text-sm font-medium text-black truncate">Fats</dt>
+              <dd className="mt-1 text-3xl font-semibold text-black">{dailyTotals.fats}g</dd>
             </div>
           </div>
         </div>
@@ -160,15 +160,15 @@ const Dashboard: React.FC = () => {
         <div className="space-y-6">
           {loading ? (
             <div className="text-center py-12">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-              <p className="mt-4 text-gray-500">Loading your meals...</p>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto"></div>
+              <p className="mt-4 text-black">Loading your meals...</p>
             </div>
           ) : meals.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg shadow">
-              <h3 className="text-lg font-medium text-gray-900">No meals logged for this date</h3>
-              <p className="mt-2 text-gray-500">Start tracking your nutrition by adding a meal!</p>
+              <h3 className="text-lg font-medium text-black">No meals logged for this date</h3>
+              <p className="mt-2 text-black">Start tracking your nutrition by adding a meal!</p>
               <div className="mt-6">
-                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
                   Add Meal
                 </button>
               </div>
@@ -177,19 +177,19 @@ const Dashboard: React.FC = () => {
             meals.map((meal) => (
               <div key={meal.id} className="bg-white shadow rounded-lg overflow-hidden">
                 <div className="px-4 py-5 sm:px-6 border-b border-gray-200">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900">{meal.meal_name}</h3>
+                  <h3 className="text-lg leading-6 font-medium text-black">{meal.meal_name}</h3>
                 </div>
                 <div className="px-4 py-5 sm:p-6">
                   {meal.foods.length === 0 ? (
-                    <p className="text-gray-500 text-center py-4">No foods logged for this meal</p>
+                    <p className="text-black text-center py-4">No foods logged for this meal</p>
                   ) : (
                     <ul className="divide-y divide-gray-200">
                       {meal.foods.map((food) => (
                         <li key={food.id} className="py-4">
                           <div className="flex items-center justify-between">
                             <div className="flex-1 min-w-0">
-                              <p className="text-sm font-medium text-gray-900 truncate">{food.name}</p>
-                              <p className="text-sm text-gray-500">
+                              <p className="text-sm font-medium text-black truncate">{food.name}</p>
+                              <p className="text-sm text-black">
                                 {food.calories} kcal • {food.protein}g protein • {food.carbs}g carbs • {food.fats}g fat
                                 {food.serving_size && food.serving_unit && (
                                   <span className="ml-2">
@@ -200,7 +200,7 @@ const Dashboard: React.FC = () => {
                             </div>
                             {food.time_logged && (
                               <div className="ml-4 flex-shrink-0">
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-black">
                                   {new Date(food.time_logged).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                 </span>
                               </div>
@@ -212,7 +212,7 @@ const Dashboard: React.FC = () => {
                   )}
                 </div>
                 <div className="px-4 py-4 sm:px-6 bg-gray-50">
-                  <button className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                  <button className="inline-flex items-center px-3 py-1.5 border border-transparent text-sm font-medium rounded-md text-black bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
                     Add Food
                   </button>
                 </div>
