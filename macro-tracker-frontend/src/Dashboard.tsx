@@ -53,6 +53,10 @@ const Dashboard: React.FC = () => {
     navigate('/');
   };
 
+  const handleAddMeal = () => {
+    navigate('/search');
+  };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -98,7 +102,7 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-red-500">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -168,7 +172,10 @@ const Dashboard: React.FC = () => {
               <h3 className="text-lg font-medium text-black">No meals logged for this date</h3>
               <p className="mt-2 text-black">Start tracking your nutrition by adding a meal!</p>
               <div className="mt-6">
-                <button className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black">
+                <button
+                  onClick={handleAddMeal}
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-black hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black"
+                >
                   Add Meal
                 </button>
               </div>
