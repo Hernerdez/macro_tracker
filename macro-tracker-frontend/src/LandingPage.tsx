@@ -3,7 +3,7 @@
 import type React from "react"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
-import axios from 'axios'
+import api from './axios'
 
 const LandingPage: React.FC = () => {
   const navigate = useNavigate()
@@ -37,19 +37,18 @@ const LandingPage: React.FC = () => {
     e.preventDefault()
     setLoginError('')
     try {
-      const params = new URLSearchParams()
-      params.append('username', loginForm.email)
-      params.append('password', loginForm.password)
+      const formData = new FormData()
+      formData.append('username', loginForm.email)
+      formData.append('password', loginForm.password)
       
-      console.log('Sending login request with:', {
+      console.log('Attempting login with:', {
         email: loginForm.email,
         password: '***'
       })
       
-      const response = await axios.post('https://macro-tracker-api.onrender.com/login/', params, {
+      const response = await api.post('/login/', formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept': 'application/json'
         }
       })
       
@@ -70,7 +69,8 @@ const LandingPage: React.FC = () => {
       console.error('Login error details:', {
         status: err.response?.status,
         data: err.response?.data,
-        message: err.message
+        message: err.message,
+        config: err.config
       })
       setLoginError(err.response?.data?.detail || 'Invalid email or password')
     }
@@ -90,37 +90,31 @@ const LandingPage: React.FC = () => {
     }
 
     try {
-      const response = await axios.post('https://macro-tracker-api.onrender.com/users/', {
+      const response = await api.post('/users/', {
         email: signupForm.email,
         password: signupForm.password,
       })
       
       if (response.data) {
-        const loginResponse = await axios.post('https://macro-tracker-api.onrender.com/login/', 
-          new URLSearchParams({
-            username: signupForm.email,
-            password: signupForm.password
-          }), {
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          }
-        )
+        // Store user info in localStorage
+        localStorage.setItem('user', JSON.stringify({
+          id: response.data.id,
+          email: response.data.email,
+          role: response.data.role
+        }))
         
-        if (loginResponse.data.access_token) {
-          localStorage.setItem('token', loginResponse.data.access_token)
-          setShowSignupModal(false)
-          setModalMode('signup')
-          setSignupForm({ email: '', password: '', confirmPassword: '' })
-          navigate('/dashboard')
-        } else {
-          setSignupError('Account created but login failed')
-        }
+        // Close modal and reset form
+        setShowSignupModal(false)
+        setModalMode('signup')
+        setSignupForm({ email: '', password: '', confirmPassword: '' })
+        
+        // Navigate to dashboard
+        navigate('/dashboard')
       } else {
         setSignupError('Error creating account')
       }
     } catch (err: any) {
-      console.error('Signup error:', err.response?.data || err.message)
+      console.error('Signup error:', err)
       if (err.response?.data?.detail) {
         const errorDetail = err.response.data.detail
         if (Array.isArray(errorDetail)) {
