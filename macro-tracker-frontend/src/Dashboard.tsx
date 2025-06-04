@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import api from './axios';
 
 interface Food {
   id: number;
@@ -17,8 +17,8 @@ interface Food {
 
 interface Meal {
   id: number;
-  meal_name: string;
   date: string;
+  meal_name: string;
   foods: Food[];
 }
 
@@ -36,6 +36,7 @@ const Dashboard: React.FC = () => {
 
   const handleLogout = (): void => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     navigate('/login');
   };
 
@@ -51,11 +52,7 @@ const Dashboard: React.FC = () => {
     if (!token) return;
 
     setLoading(true);
-    axios.get('https://macro-tracker-api.onrender.com/dashboard/', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+    api.get('/dashboard/')
       .then(res => {
         const mealsForDate: Meal[] = (res.data || []).filter((meal: Meal) => meal.date === selectedDate);
         const MEAL_ORDER = ['Breakfast', 'Lunch', 'Dinner', 'Sweet Treats'];

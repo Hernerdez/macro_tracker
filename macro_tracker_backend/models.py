@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Float, Date
 from sqlalchemy.orm import relationship
-from .database import Base
+from database import Base
 
 
 class User(Base):
@@ -43,6 +43,5 @@ class Food(Base):
     serving_unit = Column(String)
     servings = Column(Integer)
     time_logged = Column(DateTime, nullable=True)
-
 
     meal = relationship("Meal", back_populates="foods")

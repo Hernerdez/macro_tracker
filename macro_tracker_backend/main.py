@@ -1,13 +1,13 @@
-from .routers import admin
+from routers import admin
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
 from datetime import timedelta
 
-from . import models, schemas
-from .database import engine, SessionLocal
-from .auth import hash_password, verify_password, create_access_token
-from .auth import get_current_user
+import models, schemas
+from database import engine, SessionLocal
+from auth import hash_password, verify_password, create_access_token
+from auth import get_current_user
 
 from pydantic import Field
 from fastapi.security import OAuth2PasswordRequestForm
@@ -131,10 +131,6 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     print("Access token created successfully")
     
     return {"access_token": access_token, "token_type": "bearer"}
-
-from fastapi import Depends
-from .auth import get_current_user
-from . import schemas, models
 
 @app.get("/me/", response_model=schemas.UserOut)
 def read_users_me(current_user: models.User = Depends(get_current_user)):

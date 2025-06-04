@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from './axios';
 
 interface LoginFormData {
   email: string;
@@ -14,15 +14,47 @@ const Login: React.FC = () => {
     password: '',
   });
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
     try {
-      const response = await axios.post('https://macro-tracker-api.onrender.com/login/', formData);
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Invalid email or password');
+      // Create FormData for the login request
+      const loginData = new FormData();
+      loginData.append('username', formData.email);
+      loginData.append('password', formData.password);
+
+      console.log('Attempting login with:', { email: formData.email });
+
+      const response = await api.post('/login/', loginData, {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }
+      });
+
+      console.log('Login response:', response.data);
+
+      if (response.data.access_token) {
+        // Store the token
+        localStorage.setItem('token', response.data.access_token);
+        
+        // Get user info
+        const userResponse = await api.get('/me/');
+        localStorage.setItem('user', JSON.stringify(userResponse.data));
+        
+        // Navigate to dashboard
+        navigate('/dashboard');
+      } else {
+        setError('Login failed - no token received');
+      }
+    } catch (err: any) {
+      console.error('Login error:', err);
+      setError(err.response?.data?.detail || 'Invalid email or password');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -51,6 +83,7 @@ const Login: React.FC = () => {
                 placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
+                disabled={isLoading}
               />
             </div>
             <div>
@@ -62,6 +95,7 @@ const Login: React.FC = () => {
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -69,9 +103,10 @@ const Login: React.FC = () => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+              disabled={isLoading}
             >
-              Sign in
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>

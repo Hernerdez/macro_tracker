@@ -1,10 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from .. import models
-from ..auth import require_admin
-from ..auth import get_current_user
-from ..database import get_db
-from .. import schemas
+from models import User
+from auth import require_admin, get_current_user
+from database import get_db
+import schemas
 
 
 router = APIRouter(
@@ -17,17 +16,17 @@ router = APIRouter(
 @router.get("/users/", response_model=list[schemas.UserOut])
 def get_users(
     db: Session = Depends(get_db),
-    _: models.User = Depends(require_admin)  # Enforces admin check
+    _: User = Depends(require_admin)  # Enforces admin check
 ):
-    return db.query(models.User).all()
+    return db.query(User).all()
 
 @router.get("/only")
-def read_admin_data(current_user: models.User = Depends(get_current_user)):
+def read_admin_data(current_user: User = Depends(get_current_user)):
     return {"message": "Welcome, admin!"}
 
 @router.delete("/users/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.id == user_id).first()
+    user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     db.delete(user)

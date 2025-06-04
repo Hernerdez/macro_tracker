@@ -4,9 +4,9 @@ from datetime import datetime, timedelta
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
-from .database import SessionLocal
-from . import models
-from .database import get_db
+from database import SessionLocal
+import models
+from database import get_db
 
 from dotenv import load_dotenv
 import os

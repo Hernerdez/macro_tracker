@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from './axios';
 
 interface SignupFormData {
   email: string;
@@ -16,6 +16,7 @@ const Signup: React.FC = () => {
     confirmPassword: '',
   });
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
@@ -24,15 +25,40 @@ const Signup: React.FC = () => {
       return;
     }
 
+    setIsLoading(true);
     try {
-      const response = await axios.post('https://macro-tracker-api.onrender.com/signup/', {
+      const response = await api.post('/users/', {
         email: formData.email,
         password: formData.password,
       });
-      localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
-    } catch (err) {
-      setError('Error creating account');
+      
+      if (response.data) {
+        // Store user info in localStorage
+        localStorage.setItem('user', JSON.stringify({
+          id: response.data.id,
+          email: response.data.email,
+          role: response.data.role
+        }));
+        
+        // Navigate to dashboard
+        navigate('/dashboard');
+      }
+    } catch (err: any) {
+      console.error('Signup error:', err);
+      if (err.response?.data?.detail) {
+        const errorDetail = err.response.data.detail;
+        if (Array.isArray(errorDetail)) {
+          setError(errorDetail.map(err => err.msg).join(', '));
+        } else {
+          setError(errorDetail);
+        }
+      } else if (err.message === 'Network Error') {
+        setError('Unable to connect to the server. Please try again later.');
+      } else {
+        setError('Error creating account');
+      }
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,6 +87,7 @@ const Signup: React.FC = () => {
                 placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
+                disabled={isLoading}
               />
             </div>
             <div>
@@ -72,6 +99,7 @@ const Signup: React.FC = () => {
                 placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
+                disabled={isLoading}
               />
             </div>
             <div>
@@ -83,6 +111,7 @@ const Signup: React.FC = () => {
                 placeholder="Confirm password"
                 value={formData.confirmPassword}
                 onChange={handleChange}
+                disabled={isLoading}
               />
             </div>
           </div>
@@ -90,17 +119,19 @@ const Signup: React.FC = () => {
           <div>
             <button
               type="submit"
+              disabled={isLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              Sign up
+              {isLoading ? 'Creating account...' : 'Sign up'}
             </button>
           </div>
+
+          <div className="text-sm text-center">
+            <Link to="/login" className="font-medium text-indigo-600 hover:text-indigo-500">
+              Already have an account? Sign in
+            </Link>
+          </div>
         </form>
-        <div className="text-center">
-          <Link to="/login" className="text-indigo-600 hover:text-indigo-500">
-            Already have an account? Sign in
-          </Link>
-        </div>
       </div>
     </div>
   );
