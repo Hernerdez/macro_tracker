@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-html {
- /* font-size: */
-}
 /* 🔥 Custom fade-in animation */
 @keyframes fade-in {
   0% {
@@ -30,8 +27,7 @@ html {
   font-weight: 400;
 
   color-scheme: light dark;
-  /* REMOVE or comment out the next line: */
-  /* color: rgba(255, 255, 255, 0.87); */
+  /* color: rgba(255, 255, 255, 0.87);  <-- REMOVE THIS LINE */
   background-color: #ffffff;
 
   font-synthesis: none;
@@ -40,15 +36,22 @@ html {
   -moz-osx-font-smoothing: grayscale;
 }
 
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
 body {
   margin: 0;
-  /* REMOVE or comment out the next lines: */
   /* display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh; */
+  min-height: 100vh;  <-- REMOVE THESE LINES */
 }
-
 
 h1 {
   font-size: 3.2em;
